@@ -2,7 +2,6 @@ package com.navexplorer.indexer.address.indexer;
 
 import com.navexplorer.indexer.address.factory.AddressTransactionFactory;
 import com.navexplorer.indexer.address.transition.AddressTransition;
-import com.navexplorer.library.address.entity.Address;
 import com.navexplorer.library.address.entity.AddressTransaction;
 import com.navexplorer.library.block.entity.Block;
 import com.navexplorer.library.block.entity.BlockTransaction;
@@ -17,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.*;
 
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 public class AddressIndexerTest {
