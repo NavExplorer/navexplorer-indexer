@@ -23,43 +23,24 @@ public class AddressTransition {
 
     public void up(AddressTransaction transaction) {
         Address address = addressService.getAddress(transaction.getAddress());
+        address.setBlockIndex(transaction.getHeight());
 
         switch (transaction.getType()) {
-            case COMMUNITY_FUND:
-                address.setReceivedCount(address.getReceivedCount() + 1);
-                address.setReceived(address.getReceived() + transaction.getReceived());
-                address.setBalance(address.getBalance() + transaction.getReceived());
-                break;
-
             case SEND:
-                Double amountSent = transaction.getSent() - transaction.getReceived();
-
-                address.setSentCount(address.getSentCount() + 1);
-                address.setSent(address.getSent() + amountSent);
-                address.setBalance(address.getBalance() - amountSent);
+                address.send(transaction.getSent() - transaction.getReceived());
                 break;
 
             case RECEIVE:
-                Double amountReceived = transaction.getReceived() - transaction.getSent();
-
-                address.setReceivedCount(address.getReceivedCount() + 1);
-                address.setReceived(address.getReceived() + amountReceived);
-                address.setBalance(address.getBalance() + amountReceived);
+            case COMMUNITY_FUND:
+                address.receive(transaction.getReceived() - transaction.getSent());
                 break;
 
             case STAKING:
-                Double amountStaked = transaction.getReceived() - transaction.getSent();
-
-                address.setStakedCount(address.getStakedCount() + 1);
-                address.setStakedSent(address.getStakedSent() + transaction.getSent());
-                address.setStakedReceived(address.getStakedReceived() + transaction.getReceived());
-                address.setStaked(address.getStaked() + amountStaked);
-                address.setBalance(address.getBalance() + amountStaked);
+                address.stake(transaction.getSent(), transaction.getReceived());
                 break;
         }
 
         transaction.setBalance(address.getBalance());
-        address.setBlockIndex(transaction.getHeight());
 
         addressTransactionService.save(transaction);
         addressService.save(address);
