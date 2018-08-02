@@ -96,8 +96,8 @@ public class BlockIndexer {
 
         block.setStake(transaction.getStake());
 
-        transaction.getOutputs().stream().filter(o -> o.getAddress() != null).findFirst()
-                .ifPresent(output -> block.setStakedBy(output.getAddress()));
+        transaction.getOutputs().stream().filter(o -> o.getAddresses().size() > 0).findFirst()
+                .ifPresent(output -> block.setStakedBy(output.getAddresses().get(0)));
     }
 
     private Boolean blockIsOrphan(Block bestBlock, org.navcoin.response.Block apiBlock) {
