@@ -50,25 +50,12 @@ public class AddressTransition {
             case STAKING:
                 Double amountStaked = transaction.getReceived() - transaction.getSent();
 
-                if (transaction.getColdStaking()) {
-                    address.setColdStakedCount(address.getColdStakedCount() + 1);
-                    address.setColdStakedSent(address.getColdStakedSent() + transaction.getSent());
-                    address.setColdStakedReceived(address.getStakedReceived() + transaction.getReceived());
-                    address.setColdStaked(address.getColdStaked() + amountStaked);
-                    address.setBalance(address.getBalance() + amountStaked);
-
-                } else {
-                    address.setStakedCount(address.getStakedCount() + 1);
-                    address.setStakedSent(address.getStakedSent() + transaction.getSent());
-                    address.setStakedReceived(address.getStakedReceived() + transaction.getReceived());
-                    address.setStaked(address.getStaked() + amountStaked);
-                    address.setBalance(address.getBalance() + amountStaked);
-                }
+                address.setStakedCount(address.getStakedCount() + 1);
+                address.setStakedSent(address.getStakedSent() + transaction.getSent());
+                address.setStakedReceived(address.getStakedReceived() + transaction.getReceived());
+                address.setStaked(address.getStaked() + amountStaked);
+                address.setBalance(address.getBalance() + amountStaked);
                 break;
-        }
-
-        if (transaction.getColdStaking() == null) {
-            transaction.setColdStaking(false);
         }
 
         transaction.setBalance(address.getBalance());
@@ -109,20 +96,11 @@ public class AddressTransition {
             case STAKING:
                 Double amountStaked = transaction.getReceived() - transaction.getSent();
 
-                if (transaction.getColdStaking()) {
-                    address.setColdStakedCount(address.getColdStakedCount() - 1);
-                    address.setColdStakedSent(address.getColdStakedSent() - transaction.getSent());
-                    address.setColdStakedReceived(address.getStakedReceived() - transaction.getReceived());
-                    address.setColdStaked(address.getColdStaked() - amountStaked);
-                    address.setBalance(address.getBalance() - amountStaked);
-
-                } else {
-                    address.setStakedCount(address.getStakedCount() - 1);
-                    address.setStakedSent(address.getStakedSent() - transaction.getSent());
-                    address.setStakedReceived(address.getStakedReceived() - transaction.getReceived());
-                    address.setStaked(address.getStaked() - amountStaked);
-                    address.setBalance(address.getBalance() - amountStaked);
-                }
+                address.setStakedCount(address.getStakedCount() - 1);
+                address.setStakedSent(address.getStakedSent() - transaction.getSent());
+                address.setStakedReceived(address.getStakedReceived() - transaction.getReceived());
+                address.setStaked(address.getStaked() - amountStaked);
+                address.setBalance(address.getBalance() - amountStaked);
                 break;
         }
 

@@ -28,10 +28,6 @@ public class BlockTransactionFactory {
         Double outputAmount = transaction.getOutputAmount();
         Double inputAmount = transaction.getInputAmount();
 
-        if (transaction.hasOutputOfType(OutputType.COLD_STAKING)) {
-            return BlockTransactionType.COLD_STAKING;
-
-        }
         if (outputAmount - inputAmount > 0) {
             return BlockTransactionType.STAKING;
         }

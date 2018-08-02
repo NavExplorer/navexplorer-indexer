@@ -29,23 +29,9 @@ public class AddressTransactionFactory {
             return transaction;
         }
 
-        inputs.forEach(input -> {
-            if (transaction.getColdStaking() == null) {
-                transaction.setColdStaking(input.isColdStaking());
-            }
-            if (!input.isColdStaking() || address.equals(input.getAddresses().get(1))) {
-                transaction.setSent(transaction.getSent() + input.getAmount());
-            }
-        });
+        inputs.forEach(input -> transaction.setSent(transaction.getSent() + input.getAmount()));
 
-        outputs.forEach(output -> {
-            if (transaction.getColdStaking() == null) {
-                transaction.setColdStaking(output.isColdStaking());
-            }
-            if (!output.isColdStaking() || address.equals(output.getAddresses().get(1))) {
-                transaction.setReceived(transaction.getReceived() + output.getAmount());
-            }
-        });
+        outputs.forEach(output -> transaction.setReceived(transaction.getReceived() + output.getAmount()));
 
         if (transaction.getSent() == 0.0 && transaction.getReceived() == 0.0) {
             return null;
@@ -53,12 +39,6 @@ public class AddressTransactionFactory {
 
         if (blockTransaction.getInputAmount() < blockTransaction.getOutputAmount()) {
             transaction.setType(AddressTransactionType.STAKING);
-            if (transaction.getColdStaking()) {
-                inputs.stream()
-                        .filter(input -> input.getAddresses().size() == 2)
-                        .findFirst()
-                        .ifPresent(input -> transaction.setColdStakingAddress(input.getAddresses().get(0)));
-            }
         } else {
             Double inputAddress = inputs.stream().mapToDouble(Input::getAmount).sum();
             Double outputAddress = outputs.stream().mapToDouble(Output::getAmount).sum();
