@@ -52,12 +52,6 @@ public class AddressTransition {
         Address address = addressService.getAddress(transaction.getAddress());
 
         switch (transaction.getType()) {
-            case COMMUNITY_FUND:
-                address.setReceivedCount(address.getReceivedCount() - 1);
-                address.setReceived(address.getReceived() - transaction.getReceived());
-                address.setBalance(address.getBalance() - transaction.getReceived());
-                break;
-
             case SEND:
                 Double amountSent = transaction.getSent() - transaction.getReceived();
 
@@ -67,6 +61,7 @@ public class AddressTransition {
                 break;
 
             case RECEIVE:
+            case COMMUNITY_FUND:
                 Double amountReceived = transaction.getReceived() - transaction.getSent();
 
                 address.setReceivedCount(address.getReceivedCount() - 1);
