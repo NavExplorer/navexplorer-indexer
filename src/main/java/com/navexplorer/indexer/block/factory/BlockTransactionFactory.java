@@ -3,20 +3,28 @@ package com.navexplorer.indexer.block.factory;
 import com.navexplorer.library.block.entity.BlockTransaction;
 import com.navexplorer.library.block.entity.BlockTransactionType;
 import com.navexplorer.library.block.entity.Output;
-import com.navexplorer.library.block.entity.OutputType;
 import org.navcoin.response.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@Service
 public class BlockTransactionFactory {
-    public static BlockTransaction createTransaction(Transaction apiTransaction) {
+    @Autowired
+    InputFactory inputFactory;
+
+    @Autowired
+    OutputFactory outputFactory;
+
+    public BlockTransaction createTransaction(Transaction apiTransaction) {
         BlockTransaction transaction = new BlockTransaction();
         transaction.setHash(apiTransaction.getTxid());
         transaction.setTime(new Date(apiTransaction.getTime() * 1000));
         transaction.setHeight(apiTransaction.getHeight());
         transaction.setBlockHash(apiTransaction.getBlockhash());
-        transaction.setInputs(InputFactory.createInputs(apiTransaction));
-        transaction.setOutputs(OutputFactory.createOutputs(apiTransaction));
+        transaction.setInputs(inputFactory.createInputs(apiTransaction));
+        transaction.setOutputs(outputFactory.createOutputs(apiTransaction));
         transaction.setFees(applyFees(transaction));
         transaction.setType(applyType(transaction));
         transaction.setStake(applyStaking(transaction));
@@ -24,7 +32,7 @@ public class BlockTransactionFactory {
         return transaction;
     }
 
-    private static BlockTransactionType applyType(BlockTransaction transaction) {
+    private BlockTransactionType applyType(BlockTransaction transaction) {
         Double outputAmount = transaction.getOutputAmount();
         Double inputAmount = transaction.getInputAmount();
 
@@ -39,7 +47,7 @@ public class BlockTransactionFactory {
         return BlockTransactionType.SPEND;
     }
 
-    private static Double applyFees(BlockTransaction transaction) {
+    private Double applyFees(BlockTransaction transaction) {
         if (transaction.getInputAmount() - transaction.getOutputAmount() > 0) {
             return transaction.getInputAmount() - transaction.getOutputAmount();
         }
@@ -47,7 +55,7 @@ public class BlockTransactionFactory {
         return 0.0;
     }
 
-    private static Double applyStaking(BlockTransaction transaction) {
+    private Double applyStaking(BlockTransaction transaction) {
         if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
             String stakingAddress = transaction.getOutputs().stream()
                     .filter(t -> t.hasAddress() && !t.getAddresses().contains("Community Fund"))

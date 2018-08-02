@@ -4,20 +4,22 @@ import com.navexplorer.library.block.entity.OutputType;
 import com.navexplorer.library.block.entity.Output;
 import org.navcoin.response.Transaction;
 import org.navcoin.response.transaction.Vout;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Service
 public class OutputFactory {
-    public static List<Output> createOutputs(Transaction apiTransaction) {
+    public List<Output> createOutputs(Transaction apiTransaction) {
         List<Output> outputs = new ArrayList<>();
         Arrays.stream(apiTransaction.getVout()).forEach(o -> outputs.add(createOutput(o)));
 
         return outputs;
     }
 
-    private static Output createOutput(Vout vout) {
+    private Output createOutput(Vout vout) {
         Output output = new Output();
         output.setIndex(vout.getN().intValue());
 

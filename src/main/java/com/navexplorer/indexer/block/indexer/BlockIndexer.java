@@ -39,6 +39,9 @@ public class BlockIndexer {
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
+    @Autowired
+    private BlockFactory blockFactory;
+
     public Block indexBlocks() throws IndexerException {
         try {
             mustBeActive();
@@ -64,7 +67,7 @@ public class BlockIndexer {
     }
 
     private Block indexBlock(org.navcoin.response.Block apiBlock) {
-        Block block = BlockFactory.createBlock(apiBlock);
+        Block block = blockFactory.createBlock(apiBlock);
         blockService.save(block);
 
         apiBlock.getTx().forEach(blockTransactionIndexer::indexTransaction);
