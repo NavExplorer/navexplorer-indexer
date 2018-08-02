@@ -22,34 +22,51 @@ public class AddressTransactionFactory {
         transaction.setHeight(blockTransaction.getHeight());
         transaction.setTime(blockTransaction.getTime());
 
-        if (address.equals("Community Fund")) {
+        if (isCommunityFund(address)) {
             transaction.setType(AddressTransactionType.COMMUNITY_FUND);
-            transaction.setReceived(transaction.getReceived() + outputs.stream().mapToDouble(Output::getAmount).sum());
+            transaction.setReceived(outputs.stream().mapToDouble(Output::getAmount).sum());
 
             return transaction;
         }
 
         inputs.forEach(input -> transaction.setSent(transaction.getSent() + input.getAmount()));
-
         outputs.forEach(output -> transaction.setReceived(transaction.getReceived() + output.getAmount()));
 
-        if (transaction.getSent() == 0.0 && transaction.getReceived() == 0.0) {
+        if (isEmpty(transaction)) {
             return null;
         }
 
-        if (blockTransaction.getInputAmount() < blockTransaction.getOutputAmount()) {
+        if (isStaking(blockTransaction)) {
             transaction.setType(AddressTransactionType.STAKING);
-        } else {
-            Double inputAddress = inputs.stream().mapToDouble(Input::getAmount).sum();
-            Double outputAddress = outputs.stream().mapToDouble(Output::getAmount).sum();
 
-            if (inputAddress < outputAddress) {
-                transaction.setType(AddressTransactionType.RECEIVE);
-            } else {
-                transaction.setType(AddressTransactionType.SEND);
-            }
+            return transaction;
+        }
+
+        if (isReceiving(inputs, outputs)) {
+            transaction.setType(AddressTransactionType.RECEIVE);
+        } else {
+            transaction.setType(AddressTransactionType.SEND);
         }
 
         return transaction;
+    }
+
+    private Boolean isCommunityFund(String address) {
+        return address.equals("Community Fund");
+    }
+
+    private Boolean isEmpty(AddressTransaction transaction) {
+        return transaction.getSent() == 0.0 && transaction.getReceived() == 0.0;
+    }
+
+    private Boolean isStaking(BlockTransaction transaction) {
+        return transaction.getType().equals(BlockTransactionType.STAKING);
+    }
+
+    private Boolean isReceiving(List<Input> inputs, List<Output> outputs) {
+        Double inputAmount = inputs.stream().mapToDouble(Input::getAmount).sum();
+        Double outputAmount = outputs.stream().mapToDouble(Output::getAmount).sum();
+
+        return inputAmount < outputAmount;
     }
 }
