@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class BlockFactory {
     private static final Logger logger = LoggerFactory.getLogger(BlockFactory.class);
 
-    @Value("${navcoin.blocksInCycle")
+    @Value("${navcoin.blocksInCycle}")
     private Integer blocksInCycle;
 
     public Block createBlock(org.navcoin.response.Block apiBlock) {
