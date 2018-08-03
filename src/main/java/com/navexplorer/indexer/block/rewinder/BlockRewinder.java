@@ -47,6 +47,11 @@ public class BlockRewinder {
     }
 
     public void rewindToMissingTransaction(String hash) {
+        if (!blockIndexingActiveService.isActive()) {
+            logger.info("Block indexing is not active");
+            return;
+        }
+
         Transaction transaction = navcoinService.getTransactionByHash(hash);
 
         if (transaction != null) {
