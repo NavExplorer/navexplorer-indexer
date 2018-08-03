@@ -58,13 +58,13 @@ public class BlockTransactionFactory {
     private Double applyStaking(BlockTransaction transaction) {
         if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
             String stakingAddress = transaction.getOutputs().stream()
-                    .filter(t -> t.hasAddress() && !t.getAddresses().contains("Community Fund"))
+                    .filter(t -> t.getAddresses().size() != 0 && !t.getAddresses().contains("Community Fund"))
                     .findFirst().orElse(new Output()).getAddresses().get(0);
 
             transaction.getInputs().forEach(i -> i.getAddresses().add(stakingAddress));
 
             return transaction.getOutputs().stream()
-                    .filter(t -> t.hasAddress() && !t.getAddresses().contains("Community Fund"))
+                    .filter(t -> t.getAddresses().size() != 0 && !t.getAddresses().contains("Community Fund"))
                     .mapToDouble(Output::getAmount).sum() - transaction.getInputAmount();
         }
 
