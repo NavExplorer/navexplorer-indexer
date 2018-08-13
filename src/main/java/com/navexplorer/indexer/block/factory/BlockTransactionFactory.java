@@ -28,6 +28,8 @@ public class BlockTransactionFactory {
         transaction.setFees(applyFees(transaction));
         transaction.setType(applyType(transaction));
         transaction.setStake(applyStaking(transaction));
+        transaction.setVersion(apiTransaction.getVersion());
+        transaction.setAnonDestination(apiTransaction.getAnonDestination());
 
         return transaction;
     }
