@@ -24,28 +24,18 @@ public class PreviousInputService {
     public void updateTransaction(BlockTransaction transaction) {
         transaction.getInputs().stream().filter(i -> i.getPreviousOutput() != null).forEach(input -> {
             BlockTransaction previousTransaction = blockTransactionService.getOneByHash(input.getPreviousOutput());
-            if (previousTransaction == null) {
-                throw new PreviousTransactionMissingException("Could not find previous transaction", input.getPreviousOutput());
-            }
 
-            if (input.getIndex() == null) {
-                throw new RuntimeException(String.format("Input index is null. Tx: %s Addr: %s", transaction.getHash(), input.getAddresses().toString()));
-            }
-
-            Output previousOutput = previousTransaction.getOutput(input.getIndex());
-            if (previousOutput == null) {
-                throw new RuntimeException(String.format("Previous output is null. Tx: %s Addr: %s", previousTransaction.getHash(), input.getAddresses().toString()));
-            }
-
-            previousOutput.setRedeemedIn(new RedeemedIn(transaction.getHash(), transaction.getHeight()));
+            previousTransaction.getOutput(input.getIndex()).setRedeemedIn(
+                    new RedeemedIn(transaction.getHash(), transaction.getHeight())
+            );
 
             blockTransactionRepository.save(previousTransaction);
-
-            input.setPreviousOutputBlock(previousTransaction.getHeight());
-            input.setAddresses(previousOutput.getAddresses());
-            input.setAmount(previousOutput.getAmount());
-
-            blockTransactionRepository.save(transaction);
         });
+    }
+
+    public Double getPreviousOutputAmount(String hash, Integer outputIndex) {
+        BlockTransaction transaction = blockTransactionService.getOneByHash(hash);
+
+        return transaction.getOutput(outputIndex).getAmount();
     }
 }
