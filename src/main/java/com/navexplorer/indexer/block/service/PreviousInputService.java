@@ -1,12 +1,10 @@
 package com.navexplorer.indexer.block.service;
 
 import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.entity.Output;
 import com.navexplorer.library.block.entity.RedeemedIn;
 import com.navexplorer.library.block.repository.BlockTransactionRepository;
 import com.navexplorer.library.configuration.service.ConfigurationService;
 import com.navexplorer.library.block.service.BlockTransactionService;
-import com.navexplorer.indexer.block.exception.PreviousTransactionMissingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +29,5 @@ public class PreviousInputService {
 
             blockTransactionRepository.save(previousTransaction);
         });
-    }
-
-    public Double getPreviousOutputAmount(String hash, Integer outputIndex) {
-        BlockTransaction transaction = blockTransactionService.getOneByHash(hash);
-
-        return transaction.getOutput(outputIndex).getAmount();
     }
 }
