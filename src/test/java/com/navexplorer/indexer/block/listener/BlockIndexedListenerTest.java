@@ -3,6 +3,7 @@ package com.navexplorer.indexer.block.listener;
 import com.navexplorer.indexer.address.indexer.AddressIndexer;
 import com.navexplorer.indexer.block.event.BlockIndexedEvent;
 import com.navexplorer.indexer.block.indexer.SignalIndexer;
+import com.navexplorer.indexer.communityfund.indexer.CommunityFundProposalIndexer;
 import com.navexplorer.library.block.entity.Block;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,9 @@ public class BlockIndexedListenerTest {
     @Mock
     private AddressIndexer addressIndexer;
 
+    @Mock
+    private CommunityFundProposalIndexer communityFundProposalIndexer;
+
     @Test
     public void it_will_trigger_the_signal_indexer() {
         Block block = new Block();
@@ -39,5 +43,14 @@ public class BlockIndexedListenerTest {
         blockIndexedListener.onApplicationEvent(new BlockIndexedEvent(new Object(), block));
 
         verify(addressIndexer).indexBlock(block);
+    }
+
+    @Test
+    public void it_will_trigger_the_community_fund_proposal_indexer() {
+        Block block = new Block();
+
+        blockIndexedListener.onApplicationEvent(new BlockIndexedEvent(new Object(), block));
+
+        verify(communityFundProposalIndexer).updateProposals();
     }
 }

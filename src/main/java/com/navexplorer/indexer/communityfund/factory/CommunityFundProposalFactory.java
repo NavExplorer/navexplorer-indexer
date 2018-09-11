@@ -1,69 +1,46 @@
 package com.navexplorer.indexer.communityfund.factory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.navexplorer.indexer.communityfund.Dto.StrDZeel;
-import com.navexplorer.indexer.communityfund.exception.InvalidAnonDestinationException;
-import com.navexplorer.indexer.communityfund.exception.InvalidVersionException;
-import com.navexplorer.indexer.communityfund.exception.StrDZeelValidationException;
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.communityfund.entity.CommunityFundProposal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.navexplorer.library.communityfund.entity.Proposal;
+import com.navexplorer.library.communityfund.entity.ProposalState;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import java.io.IOException;
-import java.util.Set;
+import java.util.Date;
 
 @Service
 public class CommunityFundProposalFactory {
-    private static final Logger logger = LoggerFactory.getLogger(CommunityFundProposalFactory.class);
+    @Autowired
+    private CommunityFundPaymentRequestFactory communityFundPaymentRequestFactory;
 
-    public CommunityFundProposal createProposal(BlockTransaction transaction) {
-        if (!transaction.getVersion().equals(4)) {
-            throw new InvalidVersionException("Community fund proposals must have a transaction version of 4");
+    public Proposal createProposal(org.navcoin.response.Proposal apiProposal, Date createdAt) {
+        Proposal proposal = new Proposal();
+        proposal.setCreatedAt(createdAt);
+
+        return updateProposal(proposal, apiProposal);
+    }
+
+    public Proposal updateProposal(Proposal proposal, org.navcoin.response.Proposal apiProposal) {
+        proposal.setVersion(apiProposal.getVersion());
+        proposal.setHash(apiProposal.getHash());
+        proposal.setBlockHash(apiProposal.getBlockHash());
+        proposal.setDescription(apiProposal.getDescription());
+        proposal.setRequestedAmount(apiProposal.getRequestedAmount());
+        proposal.setNotPaidYet(apiProposal.getNotPaidYet());
+        proposal.setUserPaidFee(apiProposal.getUserPaidFee());
+        proposal.setPaymentAddress(apiProposal.getPaymentAddress());
+        proposal.setProposalDuration(apiProposal.getProposalDuration());
+        proposal.setVotesYes(apiProposal.getVotesYes());
+        proposal.setVotesNo(apiProposal.getVotesNo());
+        proposal.setVotingCycle(apiProposal.getVotingCycle());
+        proposal.setApprovedOnBlock(apiProposal.getApprovedOnBlock());
+        proposal.setExpiresOn(apiProposal.getExpiresOn());
+        proposal.setState(ProposalState.fromId(apiProposal.getState()));
+        proposal.setStatus(apiProposal.getStatus());
+
+        if (proposal.getState().equals(ProposalState.ACCEPTED)) {
+            proposal.setPaymentRequests(communityFundPaymentRequestFactory.createPaymentRequests(proposal, apiProposal));
         }
-
-        StrDZeel strDZeel = hydrateStrDZeel(transaction);
-
-        CommunityFundProposal proposal = new CommunityFundProposal();
-        proposal.setHeight(transaction.getHeight().longValue());
-        proposal.setTransaction(transaction.getHash());
-        proposal.setAmount(strDZeel.getAmount());
-        proposal.setAddress(strDZeel.getAddress());
-        proposal.setDeadline(strDZeel.getDeadline().longValue());
-        proposal.setDescription(strDZeel.getDescription());
 
         return proposal;
-    }
-
-    private StrDZeel hydrateStrDZeel(BlockTransaction transaction) {
-        StrDZeel strDZeel;
-
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            strDZeel = mapper.readValue(transaction.getAnonDestination(), StrDZeel.class);
-            validateStrDZeel(strDZeel);
-
-        } catch (IOException|StrDZeelValidationException e) {
-            throw new InvalidAnonDestinationException(String.format(
-                    "Could not hydrate the strDZeel at height(%s): %s",
-                    transaction.getHeight(),
-                    transaction.getAnonDestination()
-            ), e);
-        }
-
-        return strDZeel;
-    }
-
-    private void validateStrDZeel(StrDZeel strDZeel) {
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        Set<ConstraintViolation<StrDZeel>> violations = validator.validate(strDZeel);
-        if (!violations.isEmpty()) {
-            violations.forEach(v -> logger.error(String.format("%s %s", v.getPropertyPath(), v.getMessage())));
-            throw new StrDZeelValidationException("Invalid StrDZeel Data from anon-destination");
-        }
     }
 }

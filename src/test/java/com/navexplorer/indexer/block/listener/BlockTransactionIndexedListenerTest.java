@@ -1,6 +1,7 @@
 package com.navexplorer.indexer.block.listener;
 
 import com.navexplorer.indexer.block.event.BlockTransactionIndexedEvent;
+import com.navexplorer.indexer.block.indexer.BlockTransactionProposalVoteIndexer;
 import com.navexplorer.indexer.block.service.PreviousInputService;
 import com.navexplorer.library.block.entity.BlockTransaction;
 import org.junit.Test;
@@ -19,6 +20,9 @@ public class BlockTransactionIndexedListenerTest {
     @Mock
     private PreviousInputService previousInputService;
 
+    @Mock
+    private BlockTransactionProposalVoteIndexer blockProposalVoteIndexer;
+
     @Test
     public void it_will_trigger_previous_index_updater() {
         BlockTransaction transaction = new BlockTransaction();
@@ -26,5 +30,14 @@ public class BlockTransactionIndexedListenerTest {
         blockTransactionIndexedListener.onApplicationEvent(new BlockTransactionIndexedEvent(new Object(), transaction));
 
         verify(previousInputService).updateTransaction(transaction);
+    }
+
+    @Test
+    public void it_will_trigger_block_proposal_indexer() {
+        BlockTransaction transaction = new BlockTransaction();
+
+        blockTransactionIndexedListener.onApplicationEvent(new BlockTransactionIndexedEvent(new Object(), transaction));
+
+        verify(blockProposalVoteIndexer).indexProposalVotes(transaction);
     }
 }

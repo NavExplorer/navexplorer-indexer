@@ -1,6 +1,7 @@
 package com.navexplorer.indexer.communityfund.rewinder;
 
 import com.navexplorer.library.block.entity.BlockTransaction;
+import com.navexplorer.library.communityfund.entity.Proposal;
 import com.navexplorer.library.communityfund.repository.CommunityFundProposalRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +16,12 @@ public class CommunityFundProposalRewinder {
     private CommunityFundProposalRepository communityFundProposalRepository;
 
     public void rewindProposal(BlockTransaction transaction) {
-        communityFundProposalRepository.findAllByHeight(transaction.getHeight().longValue()).forEach(proposal -> {
+        Proposal proposal = communityFundProposalRepository.findOneByHash(transaction.getHash());
+
+        if (proposal != null) {
             communityFundProposalRepository.delete(proposal);
 
-            logger.info("Community proposal deleted: " + proposal.getId());
-        });
+            logger.info("Community proposal deleted: " + proposal.getHash());
+        };
     }
 }
