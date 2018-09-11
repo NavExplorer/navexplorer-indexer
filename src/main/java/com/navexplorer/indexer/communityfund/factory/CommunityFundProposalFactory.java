@@ -31,6 +31,7 @@ public class CommunityFundProposalFactory {
         proposal.setProposalDuration(apiProposal.getProposalDuration());
         proposal.setVotesYes(apiProposal.getVotesYes());
         proposal.setVotesNo(apiProposal.getVotesNo());
+        proposal.setVoteScore(apiProposal.getVotesYes() - apiProposal.getVotesNo());
         proposal.setVotingCycle(apiProposal.getVotingCycle());
         proposal.setApprovedOnBlock(apiProposal.getApprovedOnBlock());
         proposal.setExpiresOn(apiProposal.getExpiresOn());
