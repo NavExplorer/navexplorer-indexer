@@ -48,14 +48,4 @@ public class BlockTransactionIndexedListenerTest {
 
         verify(blockProposalVoteIndexer).indexProposalVotes(transaction);
     }
-
-    @Test
-    public void it_will_trigger_the_community_fund_proposal_indexer() {
-        BlockTransaction transaction = new BlockTransaction();
-        transaction.setType(BlockTransactionType.STAKING);
-
-        blockTransactionIndexedListener.onApplicationEvent(new BlockTransactionIndexedEvent(new Object(), transaction));
-
-        verify(communityFundProposalIndexer).updateProposals(transaction);
-    }
 }

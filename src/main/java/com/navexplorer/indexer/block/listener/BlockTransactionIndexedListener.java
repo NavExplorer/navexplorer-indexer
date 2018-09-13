@@ -28,7 +28,6 @@ public class BlockTransactionIndexedListener implements ApplicationListener<Bloc
 
         if (transaction.isStaking()) {
             blockProposalVoteIndexer.indexProposalVotes(transaction);
-            communityFundProposalIndexer.updateProposals(transaction);
         }
     }
 }

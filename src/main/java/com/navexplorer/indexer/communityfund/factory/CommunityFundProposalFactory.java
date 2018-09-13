@@ -23,8 +23,6 @@ public class CommunityFundProposalFactory {
     public Proposal createProposal(org.navcoin.response.Proposal apiProposal, Date createdAt) {
         Proposal proposal = new Proposal();
         proposal.setCreatedAt(createdAt);
-        proposal.setState(ProposalState.fromId(apiProposal.getState()));
-        proposal.setStatus(apiProposal.getStatus());
 
         return updateProposal(proposal, apiProposal);
     }
@@ -39,18 +37,12 @@ public class CommunityFundProposalFactory {
         proposal.setUserPaidFee(apiProposal.getUserPaidFee());
         proposal.setPaymentAddress(apiProposal.getPaymentAddress());
         proposal.setProposalDuration(apiProposal.getProposalDuration());
+        proposal.setState(ProposalState.fromId(apiProposal.getState()));
+        proposal.setStatus(apiProposal.getStatus());
         proposal.setApprovedOnBlock(apiProposal.getApprovedOnBlock());
         proposal.setExpiresOn(apiProposal.getExpiresOn());
 
-        return proposal;
-    }
-
-    public Proposal updateProposal(Proposal proposal, org.navcoin.response.Proposal apiProposal, BlockTransaction transaction) {
-        updateProposal(proposal, apiProposal);
-
-        if (proposal.getState().equals(ProposalState.PENDING)) {
-            updateVotes(proposal, transaction);
-        }
+        updateVotes(proposal, apiProposal);
 
         if (proposal.getState().equals(ProposalState.ACCEPTED)) {
             updatePaymentRequests(proposal, apiProposal);
@@ -59,28 +51,24 @@ public class CommunityFundProposalFactory {
         return proposal;
     }
 
-    private void updateVotes(Proposal proposal, BlockTransaction transaction) {
-        BlockCycle blockCycle = blockCycleService.getBlockCycleForHeight(transaction.getHeight().longValue());
-
+    private void updateVotes(Proposal proposal, org.navcoin.response.Proposal apiProposal) {
         ProposalVote latestVotes = proposal.getLatestVotes();
 
         if (latestVotes == null) {
             latestVotes = new ProposalVote();
+            latestVotes.setVotingCycle(apiProposal.getVotingCycle());
             proposal.getProposalVotes().add(latestVotes);
-        } else if (blockCycle.getCurrentBlock().equals(1)) {
+        } else if (apiProposal.getVotingCycle() > proposal.getLatestVotes().getVotingCycle()) {
             latestVotes = new ProposalVote();
-            latestVotes.setVotingCycle(proposal.getLatestVotes().getVotingCycle() + 1);
+            latestVotes.setVotingCycle(apiProposal.getVotingCycle());
             proposal.getProposalVotes().add(latestVotes);
+        } else if (apiProposal.getVotingCycle() < proposal.getLatestVotes().getVotingCycle()) {
+            proposal.getProposalVotes().remove(proposal.getLatestVotes());
+            latestVotes = proposal.getLatestVotes();
         }
 
-        BlockTransactionProposalVote blockTransactionProposalVote = transaction.getProposalVoteForHash(proposal.getHash());
-        if (blockTransactionProposalVote != null) {
-            if (blockTransactionProposalVote.getVote()) {
-                latestVotes.setVotesYes(latestVotes.getVotesYes() + 1);
-            } else {
-                latestVotes.setVotesNo(latestVotes.getVotesNo() + 1);
-            }
-        }
+        latestVotes.setVotesYes(apiProposal.getVotesYes());
+        latestVotes.setVotesNo(apiProposal.getVotesNo());
     }
 
     private void updatePaymentRequests(Proposal proposal, org.navcoin.response.Proposal apiProposal) {
