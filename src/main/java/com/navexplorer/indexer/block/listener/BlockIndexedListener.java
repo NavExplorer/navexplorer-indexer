@@ -26,6 +26,5 @@ public class BlockIndexedListener implements ApplicationListener<BlockIndexedEve
 
         signalIndexer.indexBlock(block);
         addressIndexer.indexBlock(block);
-        communityFundProposalIndexer.updateProposals();
     }
 }

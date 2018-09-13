@@ -24,9 +24,6 @@ public class BlockIndexedListenerTest {
     @Mock
     private AddressIndexer addressIndexer;
 
-    @Mock
-    private CommunityFundProposalIndexer communityFundProposalIndexer;
-
     @Test
     public void it_will_trigger_the_signal_indexer() {
         Block block = new Block();
@@ -43,14 +40,5 @@ public class BlockIndexedListenerTest {
         blockIndexedListener.onApplicationEvent(new BlockIndexedEvent(new Object(), block));
 
         verify(addressIndexer).indexBlock(block);
-    }
-
-    @Test
-    public void it_will_trigger_the_community_fund_proposal_indexer() {
-        Block block = new Block();
-
-        blockIndexedListener.onApplicationEvent(new BlockIndexedEvent(new Object(), block));
-
-        verify(communityFundProposalIndexer).updateProposals();
     }
 }

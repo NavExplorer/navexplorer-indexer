@@ -2,6 +2,7 @@ package com.navexplorer.indexer.communityfund.indexer;
 
 import com.navexplorer.indexer.communityfund.factory.CommunityFundProposalFactory;
 import com.navexplorer.library.block.entity.BlockTransaction;
+import com.navexplorer.library.block.entity.BlockTransactionType;
 import com.navexplorer.library.communityfund.entity.BlockCycle;
 import com.navexplorer.library.communityfund.entity.Proposal;
 import com.navexplorer.library.communityfund.entity.ProposalState;
@@ -49,19 +50,23 @@ public class CommunityFundProposalIndexer {
         }
     }
 
-    public void updateProposals() {
-        updateProposalsByState(ProposalState.PENDING);
-        updateProposalsByState(ProposalState.ACCEPTED);
+    public void updateProposals(BlockTransaction transaction) {
+        if (!transaction.getType().equals(BlockTransactionType.STAKING)) {
+            return;
+        }
 
         BlockCycle blockCycle = blockCycleService.getBlockCycle();
+
+        updateProposalsByState(ProposalState.PENDING, transaction, blockCycle);
+
         if (blockCycle.getCurrentBlock().equals(blockCycle.getBlocksInCycle())) {
-            updateProposalsByState(ProposalState.PENDING_FUNDS);
+            updateProposalsByState(ProposalState.PENDING_FUNDS, transaction, blockCycle);
         }
     }
 
-    private void updateProposalsByState(ProposalState state) {
+    private void updateProposalsByState(ProposalState state, BlockTransaction transaction, BlockCycle blockCycle) {
         communityFundProposalRepository.findAllByStateOrderByIdDesc(state).forEach(proposal -> {
-            communityFundProposalFactory.updateProposal(proposal, navcoinService.getProposal(proposal.getHash()));
+            communityFundProposalFactory.updateProposal(proposal, navcoinService.getProposal(proposal.getHash()), transaction);
             communityFundProposalRepository.save(proposal);
 
             logger.info(String.format("Community proposal updated: %s %s", proposal.getState(), proposal.getHash()));
