@@ -3,7 +3,6 @@ package com.navexplorer.indexer.block.listener;
 import com.navexplorer.indexer.address.indexer.AddressIndexer;
 import com.navexplorer.indexer.block.event.BlockIndexedEvent;
 import com.navexplorer.indexer.block.indexer.SignalIndexer;
-import com.navexplorer.indexer.communityfund.indexer.CommunityFundProposalIndexer;
 import com.navexplorer.library.block.entity.Block;
 import org.junit.Test;
 import org.junit.runner.RunWith;

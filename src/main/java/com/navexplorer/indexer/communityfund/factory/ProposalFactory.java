@@ -1,25 +1,14 @@
 package com.navexplorer.indexer.communityfund.factory;
 
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.entity.BlockTransactionProposalVote;
-import com.navexplorer.library.communityfund.entity.BlockCycle;
 import com.navexplorer.library.communityfund.entity.Proposal;
 import com.navexplorer.library.communityfund.entity.ProposalState;
 import com.navexplorer.library.communityfund.entity.ProposalVote;
-import com.navexplorer.library.communityfund.service.BlockCycleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
-public class CommunityFundProposalFactory {
-    @Autowired
-    private CommunityFundPaymentRequestFactory communityFundPaymentRequestFactory;
-
-    @Autowired
-    private BlockCycleService blockCycleService;
-
+public class ProposalFactory {
     public Proposal createProposal(org.navcoin.response.Proposal apiProposal, Date createdAt) {
         Proposal proposal = new Proposal();
         proposal.setCreatedAt(createdAt);
@@ -39,14 +28,18 @@ public class CommunityFundProposalFactory {
         proposal.setProposalDuration(apiProposal.getProposalDuration());
         proposal.setState(ProposalState.fromId(apiProposal.getState()));
         proposal.setStatus(apiProposal.getStatus());
-        proposal.setApprovedOnBlock(apiProposal.getApprovedOnBlock());
-        proposal.setExpiresOn(apiProposal.getExpiresOn());
+
+        if (apiProposal.getApprovedOnBlock() != null) {
+            proposal.setApprovedOnBlock(apiProposal.getApprovedOnBlock());
+        }
+
+        if (apiProposal.getExpiresOn() != null) {
+            Date expiresOn = new Date();
+            expiresOn.setTime(apiProposal.getExpiresOn()*1000);
+            proposal.setExpiresOn(expiresOn);
+        }
 
         updateVotes(proposal, apiProposal);
-
-        if (proposal.getState().equals(ProposalState.ACCEPTED)) {
-            updatePaymentRequests(proposal, apiProposal);
-        }
 
         return proposal;
     }
@@ -69,11 +62,5 @@ public class CommunityFundProposalFactory {
 
         latestVotes.setVotesYes(apiProposal.getVotesYes());
         latestVotes.setVotesNo(apiProposal.getVotesNo());
-    }
-
-    private void updatePaymentRequests(Proposal proposal, org.navcoin.response.Proposal apiProposal) {
-        if (proposal.getState().equals(ProposalState.ACCEPTED)) {
-            proposal.setPaymentRequests(communityFundPaymentRequestFactory.createPaymentRequests(proposal, apiProposal));
-        }
     }
 }
