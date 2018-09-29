@@ -62,5 +62,7 @@ public class ProposalFactory {
 
         latestVotes.setVotesYes(apiProposal.getVotesYes());
         latestVotes.setVotesNo(apiProposal.getVotesNo());
+
+        proposal.setVoteScore(apiProposal.getVotesYes() - apiProposal.getVotesNo());
     }
 }
