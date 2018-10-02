@@ -59,9 +59,13 @@ public class ProposalRewinder {
             apiProposal.getApprovedOnBlock();
 
             // Set expiresOn as as it is not always set in the factory
-            Date expiresOn = new Date();
-            expiresOn.setTime(apiProposal.getExpiresOn() * 1000);
-            proposal.setExpiresOn(expiresOn);
+            if (apiProposal.getExpiresOn() != null) {
+                Date expiresOn = new Date();
+                expiresOn.setTime(apiProposal.getExpiresOn() * 1000);
+                proposal.setExpiresOn(expiresOn);
+            } else {
+                proposal.setExpiresOn(null);
+            }
 
             proposalRepository.save(proposal);
 
