@@ -66,7 +66,7 @@ public class BlockTransactionFactory {
             transaction.getInputs().forEach(i -> i.getAddresses().add(stakingAddress));
 
             return transaction.getOutputs().stream()
-                    .filter(t -> t.getAddresses().size() != 0 && !t.getAddresses().contains("Community Fund"))
+                    .filter(t -> t.getAddresses().contains(stakingAddress))
                     .mapToDouble(Output::getAmount).sum() - transaction.getInputAmount();
         }
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProposalIndexListener implements ApplicationListener<BlockTransactionIndexedEvent> {
     @Autowired
-    ProposalIndexer proposalIndexer;
+    private ProposalIndexer proposalIndexer;
 
     @Override
     public void onApplicationEvent(BlockTransactionIndexedEvent event) {

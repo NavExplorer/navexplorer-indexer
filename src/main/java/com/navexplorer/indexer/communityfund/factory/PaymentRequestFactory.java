@@ -21,30 +21,13 @@ public class PaymentRequestFactory {
         paymentRequest.setDescription(apiPaymentRequest.getDescription());
         paymentRequest.setRequestedAmount(apiPaymentRequest.getRequestedAmount());
         paymentRequest.setState(PaymentRequestState.fromId(apiPaymentRequest.getState()));
+        paymentRequest.setStateChangedOnBlock(apiPaymentRequest.getStateChangedOnBlock());
         paymentRequest.setStatus(apiPaymentRequest.getStatus());
-
-        updateVotes(paymentRequest, apiPaymentRequest);
+        paymentRequest.setVotesYes(apiPaymentRequest.getVotesYes());
+        paymentRequest.setVotesNo(apiPaymentRequest.getVotesNo());
+        paymentRequest.setVotingCycle(apiPaymentRequest.getVotingCycle());
+        paymentRequest.setPaidOnBlock(apiPaymentRequest.getPaidOnBlock());
 
         return paymentRequest;
-    }
-
-    private void updateVotes(PaymentRequest paymentRequest, org.navcoin.response.PaymentRequest apiPaymentRequest) {
-        PaymentRequestVote latestVotes = paymentRequest.getLatestVotes();
-
-        if (latestVotes == null) {
-            latestVotes = new PaymentRequestVote();
-            latestVotes.setVotingCycle(apiPaymentRequest.getVotingCycle());
-            paymentRequest.getPaymentRequestVotes().add(latestVotes);
-        } else if (apiPaymentRequest.getVotingCycle() > paymentRequest.getLatestVotes().getVotingCycle()) {
-            latestVotes = new PaymentRequestVote();
-            latestVotes.setVotingCycle(apiPaymentRequest.getVotingCycle());
-            paymentRequest.getPaymentRequestVotes().add(latestVotes);
-        } else if (apiPaymentRequest.getVotingCycle() < paymentRequest.getLatestVotes().getVotingCycle()) {
-            paymentRequest.getPaymentRequestVotes().remove(paymentRequest.getLatestVotes());
-            latestVotes = paymentRequest.getLatestVotes();
-        }
-
-        latestVotes.setVotesYes(apiPaymentRequest.getVotesYes());
-        latestVotes.setVotesNo(apiPaymentRequest.getVotesNo());
     }
 }

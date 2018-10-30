@@ -2,7 +2,6 @@ package com.navexplorer.indexer.communityfund.factory;
 
 import com.navexplorer.library.communityfund.entity.Proposal;
 import com.navexplorer.library.communityfund.entity.ProposalState;
-import com.navexplorer.library.communityfund.entity.ProposalVote;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -28,10 +27,10 @@ public class ProposalFactory {
         proposal.setProposalDuration(apiProposal.getProposalDuration());
         proposal.setState(ProposalState.fromId(apiProposal.getState()));
         proposal.setStatus(apiProposal.getStatus());
-
-        if (apiProposal.getApprovedOnBlock() != null) {
-            proposal.setApprovedOnBlock(apiProposal.getApprovedOnBlock());
-        }
+        proposal.setStateChangedOnBlock(apiProposal.getStateChangedOnBlock());
+        proposal.setVotesYes(apiProposal.getVotesYes());
+        proposal.setVotesNo(apiProposal.getVotesNo());
+        proposal.setVotingCycle(apiProposal.getVotingCycle());
 
         if (apiProposal.getExpiresOn() != null) {
             Date expiresOn = new Date();
@@ -39,30 +38,6 @@ public class ProposalFactory {
             proposal.setExpiresOn(expiresOn);
         }
 
-        updateVotes(proposal, apiProposal);
-
         return proposal;
-    }
-
-    private void updateVotes(Proposal proposal, org.navcoin.response.Proposal apiProposal) {
-        ProposalVote latestVotes = proposal.getLatestVotes();
-
-        if (latestVotes == null) {
-            latestVotes = new ProposalVote();
-            latestVotes.setVotingCycle(apiProposal.getVotingCycle());
-            proposal.getProposalVotes().add(latestVotes);
-        } else if (apiProposal.getVotingCycle() > proposal.getLatestVotes().getVotingCycle()) {
-            latestVotes = new ProposalVote();
-            latestVotes.setVotingCycle(apiProposal.getVotingCycle());
-            proposal.getProposalVotes().add(latestVotes);
-        } else if (apiProposal.getVotingCycle() < proposal.getLatestVotes().getVotingCycle()) {
-            proposal.getProposalVotes().remove(proposal.getLatestVotes());
-            latestVotes = proposal.getLatestVotes();
-        }
-
-        latestVotes.setVotesYes(apiProposal.getVotesYes());
-        latestVotes.setVotesNo(apiProposal.getVotesNo());
-
-        proposal.setVoteScore(apiProposal.getVotesYes() - apiProposal.getVotesNo());
     }
 }

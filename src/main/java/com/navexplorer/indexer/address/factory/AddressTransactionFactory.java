@@ -36,7 +36,11 @@ public class AddressTransactionFactory {
             return null;
         }
 
-        if (isStaking(blockTransaction)) {
+        String stakingAddress = blockTransaction.getOutputs().stream()
+                .filter(t -> t.getAddresses().size() != 0 && !t.getAddresses().contains("Community Fund"))
+                .findFirst().orElse(new Output()).getAddresses().get(0);
+
+        if (isStaking(blockTransaction) && address.equals(stakingAddress)) {
             transaction.setType(AddressTransactionType.STAKING);
 
             return transaction;

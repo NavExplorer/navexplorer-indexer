@@ -1,5 +1,6 @@
 package com.navexplorer.indexer.communityfund.indexer;
 
+import com.mongodb.DuplicateKeyException;
 import com.navexplorer.indexer.communityfund.factory.PaymentRequestFactory;
 import com.navexplorer.library.block.entity.BlockTransaction;
 import com.navexplorer.library.block.entity.BlockTransactionType;
@@ -24,9 +25,6 @@ public class PaymentRequestIndexer {
     private PaymentRequestFactory paymentRequestFactory;
 
     @Autowired
-    private CommunityFundService communityFundService;
-
-    @Autowired
     private PaymentRequestRepository paymentRequestRepository;
 
     public void indexPaymentRequest(BlockTransaction transaction) {
@@ -36,15 +34,14 @@ public class PaymentRequestIndexer {
 
         try {
             PaymentRequest paymentRequest = paymentRequestFactory.createPaymentRequest(
-                    navcoinService.getPaymentRequest(transaction.getHash()),
-                    transaction
-            );
+                    navcoinService.getPaymentRequest(transaction.getHash()), transaction);
 
             paymentRequestRepository.save(paymentRequest);
 
             logger.info("Community fund payment request saved: " + paymentRequest.getHash());
+        } catch (DuplicateKeyException e) {
+            //
         } catch (Exception e) {
-            logger.error("Unable to index community fund payment request for tx: " + transaction.getHash());
             throw e;
         }
     }
@@ -55,7 +52,9 @@ public class PaymentRequestIndexer {
         }
 
         updatePaymentRequestsByState(PaymentRequestState.PENDING);
-//        updatePaymentRequestsByState(PaymentRequestState.PENDING_FUNDS);
+        updatePaymentRequestsByState(PaymentRequestState.ACCEPTED);
+        updatePaymentRequestsByState(PaymentRequestState.REJECTED);
+        updatePaymentRequestsByState(PaymentRequestState.EXPIRED);
     }
 
     private void updatePaymentRequestsByState(PaymentRequestState state) {
