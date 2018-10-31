@@ -46,7 +46,9 @@ public class AddressTransactionFactory {
             return transaction;
         }
 
-        if (isReceiving(inputs, outputs)) {
+        if (isCommunityFundPayout(blockTransaction, address, stakingAddress)) {
+            transaction.setType(AddressTransactionType.COMMUNITY_FUND_PAYOUT);
+        } else if (isReceiving(inputs, outputs)) {
             transaction.setType(AddressTransactionType.RECEIVE);
         } else {
             transaction.setType(AddressTransactionType.SEND);
@@ -57,6 +59,10 @@ public class AddressTransactionFactory {
 
     private Boolean isCommunityFund(String address) {
         return address.equals("Community Fund");
+    }
+
+    private Boolean isCommunityFundPayout(BlockTransaction transaction, String address, String stakingAddress) {
+        return isStaking(transaction) && !address.equals(stakingAddress);
     }
 
     private Boolean isEmpty(AddressTransaction transaction) {
