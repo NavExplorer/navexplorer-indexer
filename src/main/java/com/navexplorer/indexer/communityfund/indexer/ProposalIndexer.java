@@ -8,6 +8,7 @@ import com.navexplorer.library.communityfund.entity.Proposal;
 import com.navexplorer.library.communityfund.entity.ProposalState;
 import com.navexplorer.library.communityfund.repository.ProposalRepository;
 import com.navexplorer.library.navcoin.service.NavcoinService;
+import org.navcoin.exception.NavcoinException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,22 @@ public class ProposalIndexer {
             return;
         }
 
-        Proposal proposal = proposalFactory.createProposal(
-                navcoinService.getProposal(transaction.getHash()), transaction.getTime());
+        Proposal proposal = null;
 
         try {
+            proposal = proposalFactory.createProposal(
+                    navcoinService.getProposal(transaction.getHash()), transaction.getTime());
+
             proposalRepository.save(proposal);
 
             logger.info("Community fund proposal saved: " + proposal.getHash());
+        } catch (NavcoinException e) {
+            logger.error("Community fund proposal not found in tx : " + transaction.getHash());
+
         } catch (DuplicateKeyException e) {
-            updateProposal(proposalRepository.findOneByHash(proposal.getHash()));
+            if (proposal != null) {
+                updateProposal(proposalRepository.findOneByHash(proposal.getHash()));
+            }
         }
     }
 
