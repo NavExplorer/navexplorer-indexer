@@ -15,8 +15,10 @@ public class ProposalIndexListener implements ApplicationListener<BlockTransacti
     @Override
     public void onApplicationEvent(BlockTransactionIndexedEvent event) {
         BlockTransaction transaction = event.getTransaction();
+        if (!transaction.isSpend() || !transaction.getVersion().equals(4)) {
+            return;
+        }
 
         proposalIndexer.indexProposal(transaction);
-        proposalIndexer.updateProposals(transaction);
     }
 }

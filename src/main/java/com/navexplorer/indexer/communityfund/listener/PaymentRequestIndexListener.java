@@ -15,8 +15,10 @@ public class PaymentRequestIndexListener implements ApplicationListener<BlockTra
     @Override
     public void onApplicationEvent(BlockTransactionIndexedEvent event) {
         BlockTransaction transaction = event.getTransaction();
+        if (transaction.getVersion() != 5) {
+            return;
+        }
 
         paymentRequestIndexer.indexPaymentRequest(transaction);
-        paymentRequestIndexer.updatePaymentRequests(transaction);
     }
 }

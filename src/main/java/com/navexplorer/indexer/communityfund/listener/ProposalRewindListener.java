@@ -19,8 +19,10 @@ public class ProposalRewindListener implements ApplicationListener<BlockTransact
     @Override
     public void onApplicationEvent(BlockTransactionRewindEvent event) {
         BlockTransaction transaction = event.getTransaction();
+        if (!transaction.isSpend() || !transaction.getVersion().equals(4)) {
+            return;
+        }
 
         proposalRewinder.rewindProposal(transaction);
-        proposalIndexer.updateProposals(transaction);
     }
 }

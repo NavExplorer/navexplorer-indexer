@@ -25,7 +25,7 @@ public class ProposalRewinder {
         if (proposal != null) {
             proposalRepository.delete(proposal);
 
-            logger.info("Community proposal deleted: " + proposal.getHash());
+            logger.info("Community fund - Proposal deleted: " + proposal.getHash());
         }
     }
 }

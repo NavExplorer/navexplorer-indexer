@@ -46,11 +46,7 @@ public class PaymentRequestIndexer {
         }
     }
 
-    public void updatePaymentRequests(BlockTransaction transaction) {
-        if (!transaction.getType().equals(BlockTransactionType.STAKING)) {
-            return;
-        }
-
+    public void updateAllPaymentRequests() {
         updatePaymentRequestsByState(PaymentRequestState.PENDING);
         updatePaymentRequestsByState(PaymentRequestState.ACCEPTED);
         updatePaymentRequestsByState(PaymentRequestState.REJECTED);

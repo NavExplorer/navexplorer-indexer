@@ -40,15 +40,11 @@ public class ProposalIndexer {
             logger.info("Community fund proposal saved: " + proposal.getHash());
         } catch (DuplicateKeyException e) {
             updateProposal(proposalRepository.findOneByHash(proposal.getHash()));
-        } catch (Exception e) {
-            throw e;
         }
     }
 
-    public void updateProposals(BlockTransaction transaction) {
-        if (!transaction.getType().equals(BlockTransactionType.STAKING)) {
-            return;
-        }
+    public void updateAllProposals() {
+        logger.info("Community fund - Updating all proposals");
 
         updateProposalsByState(ProposalState.PENDING);
         updateProposalsByState(ProposalState.PENDING_FUNDS);
