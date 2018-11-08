@@ -36,7 +36,7 @@ public class ProposalIndexer {
 
         try {
             proposal = proposalFactory.createProposal(
-                    navcoinService.getProposal(transaction.getHash()), transaction.getTime());
+                    navcoinService.getProposal(transaction.getHash()), transaction.getTime(), transaction.getHeight());
 
             proposalRepository.save(proposal);
 

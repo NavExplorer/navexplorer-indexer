@@ -8,9 +8,10 @@ import java.util.Date;
 
 @Service
 public class ProposalFactory {
-    public Proposal createProposal(org.navcoin.response.Proposal apiProposal, Date createdAt) {
+    public Proposal createProposal(org.navcoin.response.Proposal apiProposal, Date createdAt, int height) {
         Proposal proposal = new Proposal();
         proposal.setCreatedAt(createdAt);
+        proposal.setHeight(height);
 
         return updateProposal(proposal, apiProposal);
     }
