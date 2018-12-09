@@ -37,6 +37,7 @@ public class AddressTransactionFactory {
 
             inputs.forEach(input -> {
                 if (input.getPreviousOutputType().equals(OutputType.COLD_STAKING) && input.getAddresses().get(0).equals(address)) {
+                    transaction.setColdStaking(true);
                     transaction.setColdStakingSent(transaction.getColdStakingSent() + input.getAmount());
                 } else {
                     transaction.setSent(transaction.getSent() + input.getAmount());
@@ -45,6 +46,7 @@ public class AddressTransactionFactory {
 
             outputs.forEach(output -> {
                 if (output.isColdStaking() && output.getAddresses().get(0).equals(address)) {
+                    transaction.setColdStaking(true);
                     transaction.setColdStakingReceived(transaction.getColdStakingReceived() + output.getAmount());
                 } else {
                     transaction.setReceived(transaction.getReceived() + output.getAmount());
