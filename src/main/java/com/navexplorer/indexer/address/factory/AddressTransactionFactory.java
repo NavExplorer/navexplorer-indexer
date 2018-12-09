@@ -40,6 +40,7 @@ public class AddressTransactionFactory {
                     transaction.setColdStaking(true);
                     transaction.setColdStakingSent(transaction.getColdStakingSent() + input.getAmount());
                 } else {
+                    transaction.setStandard(true);
                     transaction.setSent(transaction.getSent() + input.getAmount());
                 }
             });
@@ -49,6 +50,7 @@ public class AddressTransactionFactory {
                     transaction.setColdStaking(true);
                     transaction.setColdStakingReceived(transaction.getColdStakingReceived() + output.getAmount());
                 } else {
+                    transaction.setStandard(true);
                     transaction.setReceived(transaction.getReceived() + output.getAmount());
                 }
             });
@@ -58,6 +60,7 @@ public class AddressTransactionFactory {
 
         inputs.forEach(input -> transaction.setSent(transaction.getSent() + input.getAmount()));
         outputs.forEach(output -> transaction.setReceived(transaction.getReceived() + output.getAmount()));
+        transaction.setStandard(true);
 
         if (blockTransaction.isStaking()) {
             transaction.setType(AddressTransactionType.STAKING);
