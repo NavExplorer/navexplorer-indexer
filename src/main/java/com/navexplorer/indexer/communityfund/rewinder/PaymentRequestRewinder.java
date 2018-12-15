@@ -1,6 +1,5 @@
 package com.navexplorer.indexer.communityfund.rewinder;
 
-import com.navexplorer.library.block.entity.Block;
 import com.navexplorer.library.communityfund.repository.PaymentRequestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +13,8 @@ public class PaymentRequestRewinder {
     @Autowired
     private PaymentRequestRepository paymentRequestRepository;
 
-    public void rewindPaymentRequest(Block block) {
-        paymentRequestRepository.findByBlockHash(block.getHash()).forEach(paymentRequest -> {
+    public void rewindPaymentRequest(String blockHash) {
+        paymentRequestRepository.findByBlockHash(blockHash).forEach(paymentRequest -> {
             paymentRequestRepository.delete(paymentRequest);
             logger.info("Community fund - Payment request deleted: " + paymentRequest.getHash());
         });

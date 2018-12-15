@@ -1,6 +1,7 @@
 package com.navexplorer.indexer.zeromq;
 
 import com.navexplorer.indexer.block.indexer.BlockIndexer;
+import com.navexplorer.indexer.communityfund.indexer.PaymentRequestIndexer;
 import com.navexplorer.indexer.communityfund.indexer.ProposalIndexer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,9 @@ public class Subscriber {
 
     @Autowired
     ProposalIndexer proposalIndexer;
+
+    @Autowired
+    PaymentRequestIndexer paymentRequestIndexer;
 
     public void run() {
         ZMQ.Context context = ZMQ.context(1);
@@ -52,6 +56,7 @@ public class Subscriber {
 
                             blockIndexer.indexAllBlocks();
                             proposalIndexer.updateAllProposals();
+                            paymentRequestIndexer.updateAllPaymentRequests();
                         }
                         break;
                 }
