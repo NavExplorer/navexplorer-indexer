@@ -28,7 +28,13 @@ public class OutputFactory {
             output.setAmount(vout.getValueSat());
             output.setAddresses(vout.getScriptPubKey().getAddresses());
 
-            if (Arrays.asList(OutputType.PROPOSAL_YES_VOTE.value(), OutputType.PROPOSAL_NO_VOTE.value()).contains(vout.getScriptPubKey().getType())) {
+            List<String> votingTypes = Arrays.asList(
+                    OutputType.PROPOSAL_YES_VOTE.value(),
+                    OutputType.PROPOSAL_NO_VOTE.value(),
+                    OutputType.PAYMENT_REQUEST_YES_VOTE.value(),
+                    OutputType.PAYMENT_REQUEST_NO_VOTE.value());
+
+            if (votingTypes.contains(vout.getScriptPubKey().getType())) {
                 output.setHash(vout.getScriptPubKey().getHash());
             }
         }
