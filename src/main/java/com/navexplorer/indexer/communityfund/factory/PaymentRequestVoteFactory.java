@@ -20,7 +20,7 @@ public class PaymentRequestVoteFactory {
                     PaymentRequestVote vote = new PaymentRequestVote();
                     vote.setAddress(block.getStakedBy());
                     vote.setHeight(block.getHeight().intValue());
-                    vote.setProposal(output.getHash());
+                    vote.setPaymentRequest(output.getHash());
                     vote.setVote(true);
                     paymentRequestsVotes.add(vote);
 
@@ -28,7 +28,7 @@ public class PaymentRequestVoteFactory {
                     PaymentRequestVote vote = new PaymentRequestVote();
                     vote.setAddress(block.getStakedBy());
                     vote.setHeight(block.getHeight().intValue());
-                    vote.setProposal(output.getHash());
+                    vote.setPaymentRequest(output.getHash());
                     vote.setVote(false);
                     paymentRequestsVotes.add(vote);
                 }

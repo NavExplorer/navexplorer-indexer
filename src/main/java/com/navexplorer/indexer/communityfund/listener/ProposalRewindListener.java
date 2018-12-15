@@ -1,7 +1,6 @@
 package com.navexplorer.indexer.communityfund.listener;
 
 import com.navexplorer.indexer.block.event.BlockTransactionRewindEvent;
-import com.navexplorer.indexer.communityfund.indexer.ProposalIndexer;
 import com.navexplorer.indexer.communityfund.rewinder.ProposalRewinder;
 import com.navexplorer.indexer.communityfund.rewinder.ProposalVoteRewinder;
 import com.navexplorer.library.block.entity.BlockTransaction;
