@@ -9,14 +9,14 @@ import java.util.List;
 @Service
 public class AddressTransactionFactory {
     public AddressTransaction create(String address, BlockTransaction blockTransaction) {
-        if (blockTransaction.isEmpty()) {
-            return null;
-        }
-
         List<Input> inputs = blockTransaction.getInputsByAddress(address);
         List<Output> outputs = blockTransaction.getOutputsByAddress(address);
         Double inputAmount = inputs.stream().mapToDouble(Input::getAmount).sum();
         Double outputAmount = outputs.stream().mapToDouble(Output::getAmount).sum();
+
+        if (blockTransaction.isCoinbase() && inputs.isEmpty() && outputs.isEmpty()) {
+            return null;
+        }
 
         AddressTransaction transaction = new AddressTransaction();
         transaction.setAddress(address);

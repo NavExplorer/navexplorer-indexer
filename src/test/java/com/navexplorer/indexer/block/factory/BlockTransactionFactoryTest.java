@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.navcoin.response.Transaction;
+import org.navcoin.response.transaction.Vin;
+import org.navcoin.response.transaction.Vout;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -31,6 +33,9 @@ public class BlockTransactionFactoryTest {
     public void it_can_create_a_block_transaction() {
         Transaction apiTransaction = new Transaction();
         apiTransaction.setHeight(10);
+        apiTransaction.setVin(new Vin[1]);
+        apiTransaction.getVin()[0] = new Vin();
+        apiTransaction.getVin()[0].setCoinbase("TESTCOINBASE");
 
         List<Input> inputs = new ArrayList<>();
         List<Output> outputs = new ArrayList<>();
@@ -47,7 +52,7 @@ public class BlockTransactionFactoryTest {
         assertThat(blockTransaction.getInputs()).isEqualTo(inputs);
         assertThat(blockTransaction.getOutputs()).isEqualTo(outputs);
 
-        assertThat(blockTransaction.getType()).isEqualTo(BlockTransactionType.EMPTY);
+        assertThat(blockTransaction.getType()).isEqualTo(BlockTransactionType.COINBASE);
         assertThat(blockTransaction.getFees()).isEqualTo(0.0);
         assertThat(blockTransaction.getStake()).isEqualTo(0.0);
     }
@@ -56,6 +61,21 @@ public class BlockTransactionFactoryTest {
     public void it_can_apply_fees() {
         Transaction apiTransaction = new Transaction();
         apiTransaction.setHeight(10);
+
+        ArrayList<Vin> vins = new ArrayList<>();
+        Vin vin1 = new Vin();
+        vin1.setValue(100.0);
+        vins.add(vin1);
+        vins.add(vin1);
+
+        ArrayList<Vout> vouts = new ArrayList<>();
+        Vout vout1 = new Vout();
+        vin1.setValue(5.0);
+        vouts.add(vout1);
+        vouts.add(vout1);
+
+        apiTransaction.setVin(vins.toArray(new Vin[vins.size()]));
+        apiTransaction.setVout(vouts.toArray(new Vout[vouts.size()]));
 
         Input input1 = new Input();
         input1.setAmount(100.0);
@@ -79,8 +99,25 @@ public class BlockTransactionFactoryTest {
         Transaction apiTransaction = new Transaction();
         apiTransaction.setHeight(10);
 
+        ArrayList<Vin> vins = new ArrayList<>();
+        Vin vin1 = new Vin();
+        vin1.setValue(5.0);
+        vin1.setAddress("Not community fund");
+        vins.add(vin1);
+        vins.add(vin1);
+
+        ArrayList<Vout> vouts = new ArrayList<>();
+        Vout vout1 = new Vout();
+        vout1.setValue(100.0);
+        vouts.add(vout1);
+        vouts.add(vout1);
+
+        apiTransaction.setVin(vins.toArray(new Vin[vins.size()]));
+        apiTransaction.setVout(vouts.toArray(new Vout[vouts.size()]));
+
         Input input1 = new Input();
         input1.setAmount(5.0);
+        input1.setAddresses(Arrays.asList("Not community fund"));
         List<Input> inputs = Arrays.asList(input1, input1);
 
         Output output1 = new Output();
@@ -95,5 +132,6 @@ public class BlockTransactionFactoryTest {
 
         assertThat(blockTransaction.getType()).isEqualTo(BlockTransactionType.STAKING);
         assertThat(blockTransaction.getStake()).isEqualTo(190.0);
+        System.out.print(blockTransaction);
     }
 }

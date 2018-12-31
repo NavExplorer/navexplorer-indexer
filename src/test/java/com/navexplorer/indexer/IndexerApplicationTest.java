@@ -10,6 +10,7 @@ import com.navexplorer.indexer.exception.IndexerException;
 import com.navexplorer.indexer.softfork.SoftForkImporter;
 import com.navexplorer.indexer.zeromq.Subscriber;
 import com.navexplorer.library.block.entity.Block;
+import com.navexplorer.library.configuration.repository.ConfigurationRepository;
 import com.navexplorer.library.navcoin.service.NavcoinService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +49,9 @@ public class IndexerApplicationTest {
 
     @Mock
     private PaymentRequestIndexer paymentRequestIndexer;
+
+    @Mock
+    private ConfigurationRepository configurationRepository;
 
     @Test
     public void it_will_import_the_soft_forks_on_run() {

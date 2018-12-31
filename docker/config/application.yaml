@@ -1,9 +1,7 @@
 spring:
   data:
     mongodb:
-      database: testnet
-      host: host.docker.internal
-      port: 27017
+      uri: mongodb://host.docker.internal:27017/testnet
 
 server:
   port: 8080

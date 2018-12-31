@@ -5,6 +5,8 @@ import com.navexplorer.indexer.block.rewinder.BlockRewinder;
 import com.navexplorer.indexer.communityfund.indexer.PaymentRequestIndexer;
 import com.navexplorer.indexer.communityfund.indexer.ProposalIndexer;
 import com.navexplorer.indexer.softfork.SoftForkImporter;
+import com.navexplorer.library.configuration.entity.Configuration;
+import com.navexplorer.library.configuration.repository.ConfigurationRepository;
 import com.navexplorer.library.navcoin.service.NavcoinService;
 import com.navexplorer.indexer.block.indexer.BlockIndexer;
 import com.navexplorer.indexer.zeromq.Subscriber;
@@ -41,6 +43,9 @@ public class IndexerApplication implements CommandLineRunner {
     @Autowired
     private PaymentRequestIndexer paymentRequestIndexer;
 
+    @Autowired
+    private ConfigurationRepository configurationRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(IndexerApplication.class, args);
     }
@@ -53,6 +58,7 @@ public class IndexerApplication implements CommandLineRunner {
         addressLabelIndexer.indexAddressLabels();
 
         blockRewinder.rewindTop10Blocks();
+        rewindToConfigSetting();
         blockIndexer.indexAllBlocks();
 
         proposalIndexer.updateAllProposals();
@@ -60,5 +66,15 @@ public class IndexerApplication implements CommandLineRunner {
 
         System.out.println("Ready to receive blocks from navcoind...");
         subscriber.run();
+    }
+
+    private void rewindToConfigSetting() {
+        Configuration configuration = configurationRepository.findFirstByName("rewindToHeight");
+        if (configuration != null) {
+            blockRewinder.rewindToHeight(
+                    Long.parseLong(String.valueOf(configuration.getValue()))
+            );
+
+        }
     }
 }

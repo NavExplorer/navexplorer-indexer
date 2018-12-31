@@ -20,7 +20,7 @@ public class AddressTransactionFactoryTest {
     @Test
     public void it_will_return_null_when_an_empty_tx_is_created() {
         BlockTransaction blockTransaction = new BlockTransaction();
-        blockTransaction.setType(BlockTransactionType.EMPTY);
+        blockTransaction.setType(BlockTransactionType.COINBASE);
 
         assertThat(addressTransactionFactory.create("Address", blockTransaction)).isNull();
     }
@@ -28,7 +28,7 @@ public class AddressTransactionFactoryTest {
     @Test
     public void it_will_return_null_when_nothing_is_sent_or_received() {
         BlockTransaction blockTransaction = new BlockTransaction();
-        blockTransaction.setType(BlockTransactionType.EMPTY);
+        blockTransaction.setType(BlockTransactionType.COINBASE);
         String address = "TEST ADDRESS";
 
         assertThat(addressTransactionFactory.create(address, blockTransaction)).isNull();

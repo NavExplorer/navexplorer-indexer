@@ -25,18 +25,28 @@ public class BlockTransactionFactory {
         transaction.setTime(new Date(apiTransaction.getTime() * 1000));
         transaction.setHeight(apiTransaction.getHeight());
         transaction.setBlockHash(apiTransaction.getBlockhash());
-        transaction.setInputs(inputFactory.createInputs(apiTransaction));
+
+        if (!transactionIsCoinbase(apiTransaction)) {
+            transaction.setInputs(inputFactory.createInputs(apiTransaction));
+        }
         transaction.setOutputs(outputFactory.createOutputs(apiTransaction));
-        transaction.setFees(applyFees(transaction));
-        transaction.setType(applyType(transaction));
-        transaction.setStake(applyStaking(transaction));
-        transaction.setVersion(apiTransaction.getVersion());
-        transaction.setAnonDestination(apiTransaction.getAnonDestination());
+        transaction.setType(applyType(transaction, apiTransaction));
+
+        if (!transactionIsCoinbase(apiTransaction)) {
+            transaction.setFees(applyFees(transaction));
+            transaction.setStake(applyStaking(transaction));
+            transaction.setVersion(apiTransaction.getVersion());
+            transaction.setAnonDestination(apiTransaction.getAnonDestination());
+        }
 
         return transaction;
     }
 
-    private BlockTransactionType applyType(BlockTransaction transaction) {
+    private BlockTransactionType applyType(BlockTransaction transaction, Transaction apiTransaction) {
+        if (transactionIsCoinbase(apiTransaction)) {
+            return BlockTransactionType.COINBASE;
+        }
+
         Double outputAmount = transaction.getOutputAmount();
         Double inputAmount = transaction.getInputAmount();
 
@@ -46,10 +56,6 @@ public class BlockTransactionFactory {
             } else {
                 return BlockTransactionType.STAKING;
             }
-        }
-
-        if (inputAmount == 0 && outputAmount == 0) {
-            return BlockTransactionType.EMPTY;
         }
 
         return BlockTransactionType.SPEND;
@@ -66,7 +72,7 @@ public class BlockTransactionFactory {
     private Double applyStaking(BlockTransaction transaction) {
         if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
             String stakingAddress = transaction.getOutputs().stream()
-                    .filter(t -> t.getAddresses().size() != 0 && !t.getAddresses().contains("Community Fund"))
+                    .filter(t -> t.getAddresses().size() != 0)
                     .findFirst().orElse(new Output()).getAddresses().get(0);
 
             if (!transaction.hasInputWithAddress(stakingAddress)) {
@@ -79,5 +85,9 @@ public class BlockTransactionFactory {
         }
 
         return 0.0;
+    }
+
+    private boolean transactionIsCoinbase(Transaction transaction) {
+        return transaction.getVin() != null && transaction.getVin().length == 1 && transaction.getVin()[0].getCoinbase() != null;
     }
 }
