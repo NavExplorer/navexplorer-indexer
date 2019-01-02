@@ -74,7 +74,6 @@ public class IndexerApplication implements CommandLineRunner {
             blockRewinder.rewindToHeight(
                     Long.parseLong(String.valueOf(configuration.getValue()))
             );
-
         }
     }
 }

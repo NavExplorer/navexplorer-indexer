@@ -87,7 +87,7 @@ public class BlockIndexer {
 
         updateFeesAndSpendForBlock(block);
         updateStakingInfo(block);
-        block.setBalance(previousBalance + (block.getStake() != null ? block.getStake() : 0.0));
+        block.setBalance(previousBalance + (block.getStake() != null ? block.getStake() : 0.0) + block.getCFundPayout());
 
         blockService.save(block);
 
@@ -101,6 +101,9 @@ public class BlockIndexer {
             block.setFees(block.getFees() + transaction.getFees());
             if (transaction.isSpend()) {
                 block.setSpend(block.getSpend() + transaction.getOutputAmount());
+            }
+            if (transaction.isCoinbase() && transaction.getOutputAmount() > 0) {
+                block.setCFundPayout(transaction.getOutputAmount());
             }
         });
     }

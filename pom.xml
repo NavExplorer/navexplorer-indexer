@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.github.NavExplorer</groupId>
             <artifactId>navexplorer-library</artifactId>
-            <version>master-SNAPSHOT</version>
+            <version>[0.5,0.6]</version>
         </dependency>
 
         <dependency>
