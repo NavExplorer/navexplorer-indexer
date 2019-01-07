@@ -5,6 +5,7 @@ import com.navexplorer.library.block.entity.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AddressTransactionFactory {
@@ -38,7 +39,10 @@ public class AddressTransactionFactory {
             inputs.forEach(input -> {
                 if (input.getPreviousOutputType().equals(OutputType.COLD_STAKING) && input.getAddresses().get(0).equals(address)) {
                     transaction.setColdStaking(true);
-                    transaction.setColdStakingSent(transaction.getColdStakingSent() + input.getAmount());
+
+                    if (!transaction.getType().equals(AddressTransactionType.RECEIVE)) {
+                        transaction.setColdStakingSent(transaction.getColdStakingSent() + input.getAmount());
+                    }
                 } else {
                     transaction.setStandard(true);
                     transaction.setSent(transaction.getSent() + input.getAmount());
