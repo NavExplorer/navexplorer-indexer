@@ -40,7 +40,7 @@ public class AddressTransition {
                 address.receive(transaction.getReceived() - transaction.getSent());
                 transaction.setBalance(address.getBalance());
 
-                transaction.setColdStakingBalance(address.getColdStakedBalance() + transaction.getColdStakingReceived() - transaction.getColdStakingSent());
+                transaction.setColdStakingBalance(address.getColdStakedBalance() + transaction.getColdStakingReceived());
                 address.setColdStakedBalance(transaction.getColdStakingBalance());
                 break;
 

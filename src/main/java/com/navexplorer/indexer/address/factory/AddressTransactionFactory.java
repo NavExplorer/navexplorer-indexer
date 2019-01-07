@@ -36,19 +36,6 @@ public class AddressTransactionFactory {
                 transaction.setType(AddressTransactionType.COLD_STAKING);
             }
 
-            inputs.forEach(input -> {
-                if (input.getPreviousOutputType().equals(OutputType.COLD_STAKING) && input.getAddresses().get(0).equals(address)) {
-                    transaction.setColdStaking(true);
-
-                    if (!transaction.getType().equals(AddressTransactionType.RECEIVE)) {
-                        transaction.setColdStakingSent(transaction.getColdStakingSent() + input.getAmount());
-                    }
-                } else {
-                    transaction.setStandard(true);
-                    transaction.setSent(transaction.getSent() + input.getAmount());
-                }
-            });
-
             outputs.forEach(output -> {
                 if (output.isColdStaking() && output.getAddresses().get(0).equals(address)) {
                     transaction.setColdStaking(true);
@@ -56,6 +43,20 @@ public class AddressTransactionFactory {
                 } else {
                     transaction.setStandard(true);
                     transaction.setReceived(transaction.getReceived() + output.getAmount());
+                }
+            });
+
+            inputs.forEach(input -> {
+                if (input.getPreviousOutputType().equals(OutputType.COLD_STAKING) && input.getAddresses().get(0).equals(address)) {
+                    transaction.setColdStaking(true);
+
+                    transaction.setColdStakingSent(transaction.getColdStakingSent() + input.getAmount());
+                    if (transaction.getType().equals(AddressTransactionType.RECEIVE)) {
+                        transaction.setColdStakingReceived(transaction.getColdStakingReceived() - transaction.getColdStakingSent());
+                    }
+                } else {
+                    transaction.setStandard(true);
+                    transaction.setSent(transaction.getSent() + input.getAmount());
                 }
             });
 
