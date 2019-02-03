@@ -8,7 +8,6 @@ import org.navcoin.response.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Date;
 
 @Service
@@ -70,7 +69,7 @@ public class BlockTransactionFactory {
     }
 
     private Double applyStaking(BlockTransaction transaction) {
-        if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
+        if (!transaction.isCoinbase() && transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
             String stakingAddress = transaction.getOutputs().stream()
                     .filter(t -> t.getAddresses().size() != 0)
                     .findFirst().orElse(new Output()).getAddresses().get(0);
