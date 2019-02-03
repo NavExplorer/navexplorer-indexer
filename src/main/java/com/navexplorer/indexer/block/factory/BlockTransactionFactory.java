@@ -51,11 +51,15 @@ public class BlockTransactionFactory {
         Double inputAmount = transaction.getInputAmount();
 
         if (outputAmount - inputAmount > 0) {
+            if (transaction.hasOutputOfType(OutputType.PRIVATE_TRANSACTION)) {
+                return BlockTransactionType.PRIVATE_STAKING;
+            }
+
             if (transaction.hasOutputOfType(OutputType.COLD_STAKING)) {
                 return BlockTransactionType.COLD_STAKING;
-            } else {
-                return BlockTransactionType.STAKING;
             }
+
+            return BlockTransactionType.STAKING;
         }
 
         return BlockTransactionType.SPEND;
@@ -70,7 +74,12 @@ public class BlockTransactionFactory {
     }
 
     private Double applyStaking(BlockTransaction transaction) {
-        if (!transaction.isCoinbase() && transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
+        if (transaction.isPrivateStaking()) {
+            // hard coded to 2 as static rewards arrived before zeroCt
+            return 2.0;
+        }
+
+        if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
             Output stakingOutput = transaction.getOutputs().stream()
                     .filter(t -> t.getAddresses().size() != 0)
                     .findFirst().orElse(new Output());
