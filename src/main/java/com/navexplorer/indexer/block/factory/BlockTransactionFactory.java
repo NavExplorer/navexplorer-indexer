@@ -76,7 +76,7 @@ public class BlockTransactionFactory {
     private Double applyStaking(BlockTransaction transaction) {
         if (transaction.isPrivateStaking()) {
             // hard coded to 2 as static rewards arrived before zeroCt
-            return 2.0;
+            return 200000000.0;
         }
 
         if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
