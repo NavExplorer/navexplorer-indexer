@@ -51,9 +51,9 @@ public class AddressTransactionFactory {
                     transaction.setColdStaking(true);
 
                     transaction.setColdStakingSent(transaction.getColdStakingSent() + input.getAmount());
-                    if (transaction.getType().equals(AddressTransactionType.RECEIVE)) {
-                        transaction.setColdStakingReceived(transaction.getColdStakingReceived() - transaction.getColdStakingSent());
-                    }
+//                    if (transaction.getType().equals(AddressTransactionType.RECEIVE)) {
+//                        transaction.setColdStakingReceived(transaction.getColdStakingReceived() - transaction.getColdStakingSent());
+//                    }
                 } else {
                     transaction.setStandard(true);
                     transaction.setSent(transaction.getSent() + input.getAmount());

@@ -40,7 +40,7 @@ public class AddressTransition {
                 address.receive(transaction.getReceived() - transaction.getSent());
                 transaction.setBalance(address.getBalance());
 
-                transaction.setColdStakingBalance(address.getColdStakedBalance() + transaction.getColdStakingReceived());
+                transaction.setColdStakingBalance(address.getColdStakedBalance() + transaction.getColdStakingReceived() - transaction.getColdStakingSent());
                 address.setColdStakedBalance(transaction.getColdStakingBalance());
                 break;
 
@@ -74,7 +74,7 @@ public class AddressTransition {
                 address.setSent(address.getSent() - amountSent);
                 address.setBalance(address.getBalance() + amountSent);
 
-                transaction.setColdStakingBalance(address.getColdStakedBalance() - transaction.getColdStakingReceived());
+                transaction.setColdStakingBalance(address.getColdStakedBalance() - transaction.getColdStakingReceived() + transaction.getColdStakingSent());
                 address.setColdStakedBalance(transaction.getColdStakingBalance());
                 break;
 
@@ -86,7 +86,7 @@ public class AddressTransition {
                 address.setReceived(address.getReceived() - amountReceived);
                 address.setBalance(address.getBalance() - amountReceived);
 
-                transaction.setColdStakingBalance(address.getColdStakedBalance() - transaction.getColdStakingReceived());
+                transaction.setColdStakingBalance(address.getColdStakedBalance() - transaction.getColdStakingReceived() + transaction.getColdStakingSent());
                 address.setColdStakedBalance(transaction.getColdStakingBalance());
                 break;
 
