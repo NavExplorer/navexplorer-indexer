@@ -1,8 +1,7 @@
 FROM anapsix/alpine-java
 
-ADD ./target/navexplorer-indexer-0.3.jar /app/navexplorerIndexer.jar
-ADD ./config /app/config
-RUN mkdir /app/logs
+ADD ./target/navexplorer-indexer-BUILD.jar /app/navexplorerIndexer.jar
+ADD ./config/* /app/
 
 ADD ./entrypoint.sh /entrypoint.sh
 
