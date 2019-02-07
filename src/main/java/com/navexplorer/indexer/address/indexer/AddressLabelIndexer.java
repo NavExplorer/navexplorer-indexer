@@ -22,7 +22,7 @@ public class AddressLabelIndexer {
     private AddressRepository addressRepository;
 
     public void indexAddressLabels() {
-        File labelsFile = new File("/data/addressLabels.json");
+        File labelsFile = new File("/app/addressLabels.json");
 
         try {
             ObjectMapper mapper = new ObjectMapper();
