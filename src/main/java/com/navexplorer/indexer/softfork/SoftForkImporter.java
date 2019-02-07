@@ -22,7 +22,7 @@ public class SoftForkImporter {
     private SoftForkRepository softForkRepository;
 
     public void importSoftForks() {
-        File signalsFile = new File("/app/softForks.json");
+        File signalsFile = new File("/app/config/softForks.json");
 
         try {
             ObjectMapper mapper = new ObjectMapper();
