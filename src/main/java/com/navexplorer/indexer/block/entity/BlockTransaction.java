@@ -109,6 +109,11 @@ public class BlockTransaction {
         return type == BlockTransactionType.COLD_STAKING;
     }
 
+    @JsonIgnore
+    public boolean isPrivateStaking() {
+        return type == BlockTransactionType.PRIVATE_STAKING;
+    }
+
     public String getRaw() {
         return raw;
     }
