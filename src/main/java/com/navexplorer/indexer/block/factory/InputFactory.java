@@ -30,7 +30,7 @@ public class InputFactory {
 
         if (vin.getZerocoinspend() != null) {
             input.setZeroCoinSpend(vin.getZerocoinspend());
-            input.setAmount(vin.getValue());
+            input.setAmount(vin.getValue() * 100000000);
         } else if (vin.getAddress() != null) {
             input.getAddresses().add(vin.getAddress());
         }
