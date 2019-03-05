@@ -31,7 +31,6 @@ public class BlockTransaction {
     String hash;
 
     @NotNull
-    @Indexed
     Integer height;
 
     @NotNull
@@ -43,14 +42,12 @@ public class BlockTransaction {
 
     @NotNull
     @JsonIgnore
-    @Indexed
     String blockHash;
 
     List<Input> inputs = new ArrayList<>();
 
     List<Output> outputs = new ArrayList<>();
 
-    @Indexed
     BlockTransactionType type;
 
     Integer version;
@@ -70,12 +67,6 @@ public class BlockTransaction {
         return inputs.stream().mapToDouble(Input::getAmount).sum();
     }
 
-    public Input getInput(Integer index) {
-        Optional<Input> input = inputs.stream().filter(i -> i.getIndex().equals(index)).findAny();
-
-        return input.orElse(null);
-    }
-
     public boolean hasInputWithAddress(String address) {
         return inputs.stream().anyMatch(i -> i.getAddresses().contains(address));
     }
@@ -88,10 +79,6 @@ public class BlockTransaction {
         Optional<Output> output = outputs.stream().filter(o -> o.getIndex().equals(index)).findFirst();
 
         return output.orElse(null);
-    }
-
-    public boolean hasOutputWithAddress(String address) {
-        return outputs.stream().anyMatch(o -> o.getAddresses().contains(address));
     }
 
     public List<Output> getOutputsByAddress(String address) {

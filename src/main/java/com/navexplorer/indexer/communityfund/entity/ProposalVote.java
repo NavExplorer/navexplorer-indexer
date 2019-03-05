@@ -19,12 +19,7 @@ public class ProposalVote {
     @Indexed
     private int height;
 
-    @Indexed
     private String address;
-
-    @Indexed
     private String proposal;
-
-    @Indexed
     private Boolean vote;
 }

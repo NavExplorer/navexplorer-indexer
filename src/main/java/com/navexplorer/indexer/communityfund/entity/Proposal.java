@@ -17,43 +17,24 @@ public class Proposal {
     @Id
     private String id;
 
-    private Integer version;
-
     @Indexed(unique=true)
     private String hash;
 
+    private Integer version;
     private String blockHash;
-
     private Integer height;
-
     private String description;
-
     private Double requestedAmount;
-
     private Double notPaidYet;
-
     private Double userPaidFee;
-
     private String paymentAddress;
-
     private Long proposalDuration;
-
     private Integer votesYes;
-
     private Integer votesNo;
-
     private Integer votingCycle;
-
     private String status;
-
-    @Indexed
     private ProposalState state;
-
     private String stateChangedOnBlock;
-
-    @Indexed
     private Date expiresOn;
-
-    @Indexed
     private Date createdAt;
 }

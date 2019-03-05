@@ -19,12 +19,7 @@ public class PaymentRequestVote {
     @Indexed
     private int height;
 
-    @Indexed
     private String address;
-
-    @Indexed
     private String paymentRequest;
-
-    @Indexed
     private Boolean vote;
 }

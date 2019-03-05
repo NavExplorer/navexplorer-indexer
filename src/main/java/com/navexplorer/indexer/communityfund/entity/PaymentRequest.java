@@ -17,35 +17,20 @@ public class PaymentRequest {
     @Id
     String id;
 
-    private Integer version;
-
     @Indexed(unique=true)
     private String hash;
 
+    private Integer version;
     private String blockHash;
-
-    @Indexed
     private String proposalHash;
-
     private String description;
-
     private Double requestedAmount;
-
     private Integer votesYes;
-
     private Integer votesNo;
-
     private Integer votingCycle;
-
-    @Indexed
     private PaymentRequestState state;
-
     private String status;
-
     private String stateChangedOnBlock;
-
     private String paidOnBlock;
-
-    @Indexed
     private Date createdAt;
 }

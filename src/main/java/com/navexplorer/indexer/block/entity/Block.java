@@ -67,8 +67,6 @@ public class Block {
 
     Integer transactions;
 
-    List<BlockSignal> signals = new ArrayList<>();
-
     @Indexed
     Integer blockCycle;
 

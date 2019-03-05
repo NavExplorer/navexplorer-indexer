@@ -1,7 +1,6 @@
 package com.navexplorer.indexer.block.entity;
 
 import com.navexplorer.indexer.block.entity.Block;
-import com.navexplorer.indexer.block.entity.BlockSignal;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -162,16 +161,6 @@ public class BlockTest {
         block.setTransactions(transactions);
 
         assertThat(block.getTransactions()).isEqualTo(transactions);
-    }
-
-    @Test
-    public void it_can_set_and_get_the_block_signals() {
-        BlockSignal signal1 = new BlockSignal();
-        List<BlockSignal> signals = Arrays.asList(signal1, signal1);
-        Block block = new Block();
-        block.setSignals(signals);
-
-        assertThat(block.getSignals()).isEqualTo(signals);
     }
 
     @Test
