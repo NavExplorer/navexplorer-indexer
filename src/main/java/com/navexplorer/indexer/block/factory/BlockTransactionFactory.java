@@ -50,7 +50,7 @@ public class BlockTransactionFactory {
         Double inputAmount = transaction.getInputAmount();
         Double outputAmount = transaction.getOutputAmount();
 
-        if (!inputAmount.equals(outputAmount) && outputAmount - inputAmount > 0) {
+        if (outputAmount - inputAmount > 0) {
             if (transaction.hasOutputOfType(OutputType.PRIVATE_TRANSACTION)) {
                 return BlockTransactionType.PRIVATE_STAKING;
             }

@@ -28,7 +28,10 @@ public class InputFactory {
     private Input createInput(Vin vin) {
         Input input = new Input();
 
-        if (vin.getAddress() != null) {
+        if (vin.getZerocoinspend() != null) {
+            input.setZeroCoinSpend(vin.getZerocoinspend());
+            input.setAmount(vin.getValue());
+        } else if (vin.getAddress() != null) {
             input.getAddresses().add(vin.getAddress());
         }
 

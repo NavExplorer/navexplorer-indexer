@@ -15,6 +15,7 @@ public class Input {
     String previousOutput;
     Integer previousOutputBlock;
     OutputType previousOutputType;
+    String zeroCoinSpend;
 
     public List<String> getAddresses() {
         if (addresses == null) {
