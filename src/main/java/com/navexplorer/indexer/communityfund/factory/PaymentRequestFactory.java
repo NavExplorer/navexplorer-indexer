@@ -1,7 +1,8 @@
 package com.navexplorer.indexer.communityfund.factory;
 
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.communityfund.entity.*;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.communityfund.entity.PaymentRequest;
+import com.navexplorer.indexer.communityfund.entity.PaymentRequestState;
 import org.springframework.stereotype.Service;
 
 @Service

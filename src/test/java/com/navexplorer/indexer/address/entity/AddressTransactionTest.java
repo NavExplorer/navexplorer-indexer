@@ -94,36 +94,4 @@ public class AddressTransactionTest {
         transaction.setReceived(received);
         assertThat(transaction.getReceived()).isEqualTo(received);
     }
-
-    @Test
-    public void it_can_be_a_send_transaction() {
-        AddressTransaction transaction = new AddressTransaction();
-        transaction.setType(AddressTransactionType.SEND);
-
-        assertThat(transaction.isSend()).isTrue();
-    }
-
-    @Test
-    public void it_can_be_a_receive_transaction() {
-        AddressTransaction transaction = new AddressTransaction();
-        transaction.setType(AddressTransactionType.RECEIVE);
-
-        assertThat(transaction.isReceive()).isTrue();
-    }
-
-    @Test
-    public void it_can_be_a_stake_transaction() {
-        AddressTransaction transaction = new AddressTransaction();
-        transaction.setType(AddressTransactionType.STAKING);
-
-        assertThat(transaction.isStake()).isTrue();
-    }
-
-    @Test
-    public void it_can_be_a_community_find_transaction() {
-        AddressTransaction transaction = new AddressTransaction();
-        transaction.setType(AddressTransactionType.COMMUNITY_FUND);
-
-        assertThat(transaction.isCommunityFund()).isTrue();
-    }
 }

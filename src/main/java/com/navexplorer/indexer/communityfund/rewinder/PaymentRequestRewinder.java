@@ -1,6 +1,6 @@
 package com.navexplorer.indexer.communityfund.rewinder;
 
-import com.navexplorer.library.communityfund.repository.PaymentRequestRepository;
+import com.navexplorer.indexer.communityfund.repository.PaymentRequestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,11 @@
 package com.navexplorer.indexer.address.factory;
 
-import com.navexplorer.library.address.entity.*;
-import com.navexplorer.library.block.entity.*;
+import com.navexplorer.indexer.address.entity.AddressTransaction;
+import com.navexplorer.indexer.address.entity.AddressTransactionType;
+import com.navexplorer.indexer.block.entity.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AddressTransactionFactory {
@@ -51,9 +51,6 @@ public class AddressTransactionFactory {
                     transaction.setColdStaking(true);
 
                     transaction.setColdStakingSent(transaction.getColdStakingSent() + input.getAmount());
-//                    if (transaction.getType().equals(AddressTransactionType.RECEIVE)) {
-//                        transaction.setColdStakingReceived(transaction.getColdStakingReceived() - transaction.getColdStakingSent());
-//                    }
                 } else {
                     transaction.setStandard(true);
                     transaction.setSent(transaction.getSent() + input.getAmount());

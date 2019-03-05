@@ -1,18 +1,17 @@
 package com.navexplorer.indexer.block.indexer;
 
 import com.navexplorer.indexer.block.event.BlockIndexedEvent;
-import com.navexplorer.indexer.block.event.BlockTransactionIndexedEvent;
 import com.navexplorer.indexer.block.event.OrphanedBlockEvent;
 import com.navexplorer.indexer.block.exception.*;
 import com.navexplorer.indexer.block.factory.BlockFactory;
 import com.navexplorer.indexer.block.service.BlockIndexingActiveService;
 import com.navexplorer.indexer.exception.IndexerException;
-import com.navexplorer.library.block.entity.Block;
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.repository.BlockTransactionRepository;
-import com.navexplorer.library.block.service.BlockService;
-import com.navexplorer.library.block.service.BlockTransactionService;
-import com.navexplorer.library.navcoin.service.NavcoinService;
+import com.navexplorer.indexer.block.entity.Block;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.block.repository.BlockTransactionRepository;
+import com.navexplorer.indexer.block.service.BlockService;
+import com.navexplorer.indexer.block.service.BlockTransactionService;
+import com.navexplorer.indexer.navcoin.service.NavcoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -99,9 +98,11 @@ public class BlockIndexer {
     private void updateFeesAndSpendForBlock(Block block) {
         blockTransactionService.getByHeight(block.getHeight()).forEach(transaction -> {
             block.setFees(block.getFees() + transaction.getFees());
+
             if (transaction.isSpend()) {
                 block.setSpend(block.getSpend() + transaction.getOutputAmount());
             }
+
             if (transaction.isCoinbase() && transaction.getOutputAmount() > 0) {
                 block.setCFundPayout(transaction.getOutputAmount());
             }

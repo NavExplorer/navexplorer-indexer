@@ -1,14 +1,14 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://host.docker.internal:27017/testnet
+      uri: mongodb://209.97.140.229:27017/testnet
 
 server:
   port: 8080
 
 navcoin:
   properties:
-    host: host.docker.internal
+    host: 138.68.151.166
     port: 8332
     protocol: http
     username: user
@@ -16,7 +16,7 @@ navcoin:
   blocksInCycle: 400
 
 zeromq:
-  address: tcp://host.docker.internal:28332
+  address: tcp://138.68.151.166:28332
 
 communityFund:
   blocksInCycle: 180

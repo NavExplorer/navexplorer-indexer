@@ -1,11 +1,11 @@
 package com.navexplorer.indexer.block.indexer;
 
-import com.navexplorer.library.block.entity.Block;
-import com.navexplorer.library.block.entity.BlockSignal;
-import com.navexplorer.library.block.repository.BlockRepository;
-import com.navexplorer.library.softfork.entity.SoftFork;
-import com.navexplorer.library.softfork.entity.SoftForkState;
-import com.navexplorer.library.softfork.repository.SoftForkRepository;
+import com.navexplorer.indexer.block.entity.Block;
+import com.navexplorer.indexer.block.entity.BlockSignal;
+import com.navexplorer.indexer.block.repository.BlockRepository;
+import com.navexplorer.indexer.softfork.entity.SoftFork;
+import com.navexplorer.indexer.softfork.entity.SoftForkState;
+import com.navexplorer.indexer.softfork.repository.SoftForkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

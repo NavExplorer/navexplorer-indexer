@@ -72,21 +72,6 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void it_can_retrieve_the_top_100_addresses() {
-        Address address = new Address();
-        address.setBalance(10.0);
-
-        List<Address> addressList = new ArrayList<>();
-        addressList.add(address);
-
-        when(addressRepository.findTop100ByBalanceGreaterThanOrderByBalanceDesc(0.0)).thenReturn(addressList);
-        when(addressRepository.getRichListPosition(address.getBalance())).thenReturn(0L);
-
-        List<Address> addresses = addressService.getTop100Addresses();
-        assertThat(addresses.get(0).getRichListPosition()).isEqualTo(1);
-    }
-
-    @Test
     public void it_can_save_an_address() {
         Address address = new Address();
 
@@ -104,38 +89,5 @@ public class AddressServiceTest {
         addressService.save(addresses);
 
         verify(addressRepository).saveAll(addresses);
-    }
-
-    @Test(expected = UnableToValidateAddressException.class)
-    public void it_can_throw_and_exception_when_it_cannot_validate_an_address() {
-        String address = "ADDRESS";
-
-        when(navcoinService.getValidateAddressByHash(address)).thenThrow(AddressNotValidException.class);
-
-        addressService.validateAddress("ADDRESS");
-    }
-
-    @Test(expected = AddressNotValidException.class)
-    public void it_can_throw_an_exception_if_the_address_is_invalid() {
-        String address = "ADDRESS";
-        ValidateAddress validateAddress = new ValidateAddress();
-        validateAddress.setAddress(address);
-        validateAddress.setIsvalid(false);
-
-        when(navcoinService.getValidateAddressByHash(address)).thenReturn(validateAddress);
-
-        addressService.validateAddress(address);
-    }
-
-    @Test
-    public void it_can_return_a_validate_address_object_when_an_address_is_validated() {
-        String address = "ADDRESS";
-        ValidateAddress validateAddress = new ValidateAddress();
-        validateAddress.setAddress(address);
-        validateAddress.setIsvalid(true);
-
-        when(navcoinService.getValidateAddressByHash(address)).thenReturn(validateAddress);
-
-        assertThat(addressService.validateAddress(address)).isEqualTo(validateAddress);
     }
 }

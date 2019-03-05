@@ -39,7 +39,8 @@ public class AddressTest {
         address.setReceivedCount(5);
         address.setBalance(1000.0);
 
-        assertThat(address.receive(1000.0)).isEqualTo(address);
+        address.receive(1000.0);
+
         assertThat(address.getReceived()).isEqualTo(6000.0);
         assertThat(address.getReceivedCount()).isEqualTo(6);
         assertThat(address.getBalance()).isEqualTo(2000.0);
@@ -52,7 +53,8 @@ public class AddressTest {
         address.setSentCount(5);
         address.setBalance(1000.0);
 
-        assertThat(address.send(1000.0)).isEqualTo(address);
+        address.send(1000.0);
+
         assertThat(address.getSent()).isEqualTo(6000.0);
         assertThat(address.getSentCount()).isEqualTo(6);
         assertThat(address.getBalance()).isEqualTo(0.0);
@@ -67,7 +69,8 @@ public class AddressTest {
         address.setStakedCount(1);
         address.setBalance(3.0);
 
-        assertThat(address.stake(7.0, 10.0)).isEqualTo(address);
+        address.stake(7.0, 10.0);
+
         assertThat(address.getStakedSent()).isEqualTo(14.0);
         assertThat(address.getStakedReceived()).isEqualTo(20.0);
         assertThat(address.getStaked()).isEqualTo(6.0);

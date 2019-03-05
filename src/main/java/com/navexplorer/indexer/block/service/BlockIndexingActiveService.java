@@ -1,7 +1,7 @@
 package com.navexplorer.indexer.block.service;
 
-import com.navexplorer.library.configuration.entity.Configuration;
-import com.navexplorer.library.configuration.repository.ConfigurationRepository;
+import com.navexplorer.indexer.configuration.entity.Configuration;
+import com.navexplorer.indexer.configuration.repository.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

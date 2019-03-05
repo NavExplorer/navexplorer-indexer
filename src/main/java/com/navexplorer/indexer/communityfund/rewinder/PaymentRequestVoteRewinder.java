@@ -1,6 +1,6 @@
 package com.navexplorer.indexer.communityfund.rewinder;
 
-import com.navexplorer.library.communityfund.repository.PaymentRequestVoteRepository;
+import com.navexplorer.indexer.communityfund.repository.PaymentRequestVoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +10,6 @@ public class PaymentRequestVoteRewinder {
     PaymentRequestVoteRepository paymentRequestVoteRepository;
 
     public void rewindPaymentRequestVotes(int height) {
-        paymentRequestVoteRepository.delete(paymentRequestVoteRepository.findAllByHeightGreaterThanEqual(height));
+        paymentRequestVoteRepository.deleteAll(paymentRequestVoteRepository.findAllByHeightGreaterThanEqual(height));
     }
 }

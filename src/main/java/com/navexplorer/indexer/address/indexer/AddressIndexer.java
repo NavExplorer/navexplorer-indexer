@@ -1,9 +1,9 @@
 package com.navexplorer.indexer.address.indexer;
 
 import com.navexplorer.indexer.address.transition.AddressTransition;
-import com.navexplorer.library.address.entity.AddressTransaction;
-import com.navexplorer.library.block.entity.*;
-import com.navexplorer.library.block.service.BlockTransactionService;
+import com.navexplorer.indexer.address.entity.AddressTransaction;
+import com.navexplorer.indexer.block.entity.Block;
+import com.navexplorer.indexer.block.service.BlockTransactionService;
 import com.navexplorer.indexer.address.factory.AddressTransactionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package com.navexplorer.indexer.communityfund.factory;
 
-import com.navexplorer.library.communityfund.entity.Proposal;
-import com.navexplorer.library.communityfund.entity.ProposalState;
+import com.navexplorer.indexer.communityfund.entity.Proposal;
+import com.navexplorer.indexer.communityfund.entity.ProposalState;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
