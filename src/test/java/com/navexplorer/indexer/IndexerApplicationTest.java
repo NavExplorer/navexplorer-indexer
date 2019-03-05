@@ -1,6 +1,5 @@
 package com.navexplorer.indexer;
 
-import com.IndexerApplication;
 import com.navexplorer.indexer.address.indexer.AddressLabelIndexer;
 import com.navexplorer.indexer.block.indexer.BlockIndexer;
 import com.navexplorer.indexer.block.rewinder.BlockRewinder;
@@ -9,19 +8,18 @@ import com.navexplorer.indexer.communityfund.indexer.ProposalIndexer;
 import com.navexplorer.indexer.exception.IndexerException;
 import com.navexplorer.indexer.softfork.SoftForkImporter;
 import com.navexplorer.indexer.zeromq.Subscriber;
-import com.navexplorer.library.block.entity.Block;
-import com.navexplorer.library.configuration.repository.ConfigurationRepository;
-import com.navexplorer.library.navcoin.service.NavcoinService;
+import com.navexplorer.indexer.configuration.repository.ConfigurationRepository;
+import com.navexplorer.indexer.navcoin.service.NavcoinService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.navcoin.response.Info;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class IndexerApplicationTest {
     @InjectMocks
     private IndexerApplication application;

@@ -6,20 +6,20 @@ import com.navexplorer.indexer.block.exception.BlockIndexingNotActiveException;
 import com.navexplorer.indexer.block.exception.ReachedBestBlockException;
 import com.navexplorer.indexer.block.factory.BlockFactory;
 import com.navexplorer.indexer.block.service.BlockIndexingActiveService;
-import com.navexplorer.library.block.entity.Block;
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.entity.BlockTransactionType;
-import com.navexplorer.library.block.entity.Output;
-import com.navexplorer.library.block.repository.BlockTransactionRepository;
-import com.navexplorer.library.block.service.BlockService;
-import com.navexplorer.library.block.service.BlockTransactionService;
-import com.navexplorer.library.navcoin.service.NavcoinService;
+import com.navexplorer.indexer.block.entity.Block;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.block.entity.BlockTransactionType;
+import com.navexplorer.indexer.block.entity.Output;
+import com.navexplorer.indexer.block.repository.BlockTransactionRepository;
+import com.navexplorer.indexer.block.service.BlockService;
+import com.navexplorer.indexer.block.service.BlockTransactionService;
+import com.navexplorer.indexer.navcoin.service.NavcoinService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +28,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BlockIndexerTest {
     @InjectMocks
     private BlockIndexer blockIndexer;
@@ -154,6 +154,7 @@ public class BlockIndexerTest {
         Block newBlock = new Block();
         newBlock.setHash("NEW HASH");
         newBlock.setStake(1.0);
+        newBlock.setHeight(2L);
 
         Output output = new Output();
         output.setAmount(500.0);
@@ -163,6 +164,7 @@ public class BlockIndexerTest {
         transaction.setType(BlockTransactionType.SPEND);
         transaction.setOutputs(Arrays.asList(output));
         List<BlockTransaction> transactions = Arrays.asList(transaction);
+
 
         when(blockIndexingActiveService.isActive()).thenReturn(true);
         when(blockService.getBestBlock()).thenReturn(bestBlock);

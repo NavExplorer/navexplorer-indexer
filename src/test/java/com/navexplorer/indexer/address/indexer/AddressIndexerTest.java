@@ -2,22 +2,22 @@ package com.navexplorer.indexer.address.indexer;
 
 import com.navexplorer.indexer.address.factory.AddressTransactionFactory;
 import com.navexplorer.indexer.address.transition.AddressTransition;
-import com.navexplorer.library.address.entity.AddressTransaction;
-import com.navexplorer.library.block.entity.Block;
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.service.BlockTransactionService;
+import com.navexplorer.indexer.address.entity.AddressTransaction;
+import com.navexplorer.indexer.block.entity.Block;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.block.service.BlockTransactionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.*;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AddressIndexerTest {
     @InjectMocks
     private AddressIndexer addressIndexer;

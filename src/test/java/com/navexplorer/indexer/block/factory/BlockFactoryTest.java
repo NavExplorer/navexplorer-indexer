@@ -1,7 +1,7 @@
 package com.navexplorer.indexer.block.factory;
 
 import com.navexplorer.indexer.block.exception.CreateBlockException;
-import com.navexplorer.library.block.entity.Block;
+import com.navexplorer.indexer.block.entity.Block;
 import org.junit.Test;
 
 import java.util.Arrays;

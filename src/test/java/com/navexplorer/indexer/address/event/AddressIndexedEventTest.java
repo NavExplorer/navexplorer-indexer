@@ -1,6 +1,6 @@
 package com.navexplorer.indexer.address.event;
 
-import com.navexplorer.library.address.entity.AddressTransaction;
+import com.navexplorer.indexer.address.entity.AddressTransaction;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

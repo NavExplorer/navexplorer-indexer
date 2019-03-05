@@ -1,8 +1,8 @@
 package com.navexplorer.indexer.address.indexer;
 
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.entity.Input;
-import com.navexplorer.library.block.entity.Output;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.block.entity.Input;
+import com.navexplorer.indexer.block.entity.Output;
 import org.junit.Test;
 
 import java.util.Arrays;

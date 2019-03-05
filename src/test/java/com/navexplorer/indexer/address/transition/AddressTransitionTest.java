@@ -2,22 +2,22 @@ package com.navexplorer.indexer.address.transition;
 
 import com.navexplorer.indexer.address.event.AddressIndexedEvent;
 import com.navexplorer.indexer.address.event.AddressRewindEvent;
-import com.navexplorer.library.address.entity.Address;
-import com.navexplorer.library.address.entity.AddressTransaction;
-import com.navexplorer.library.address.entity.AddressTransactionType;
-import com.navexplorer.library.address.service.AddressService;
-import com.navexplorer.library.address.service.AddressTransactionService;
+import com.navexplorer.indexer.address.entity.Address;
+import com.navexplorer.indexer.address.entity.AddressTransaction;
+import com.navexplorer.indexer.address.entity.AddressTransactionType;
+import com.navexplorer.indexer.address.service.AddressService;
+import com.navexplorer.indexer.address.service.AddressTransactionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AddressTransitionTest {
     @InjectMocks
     private AddressTransition addressTransition;

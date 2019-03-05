@@ -2,17 +2,17 @@ package com.navexplorer.indexer.block.listener;
 
 import com.navexplorer.indexer.block.event.BlockTransactionIndexedEvent;
 import com.navexplorer.indexer.block.service.PreviousInputService;
-import com.navexplorer.library.block.entity.Block;
-import com.navexplorer.library.block.entity.BlockTransaction;
+import com.navexplorer.indexer.block.entity.Block;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BlockTransactionIndexedListenerTest {
     @InjectMocks
     private BlockTransactionIndexedListener blockTransactionIndexedListener;
