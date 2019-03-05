@@ -47,14 +47,12 @@ public class Block {
     Long height;
 
     @NotNull
-    @Indexed
     Double difficulty;
 
     @NotNull
     Long confirmations;
 
     @NotNull
-    @Indexed
     Date created;
 
     Double stake;
@@ -67,7 +65,6 @@ public class Block {
 
     Integer transactions;
 
-    @Indexed
     Integer blockCycle;
 
     @Transient

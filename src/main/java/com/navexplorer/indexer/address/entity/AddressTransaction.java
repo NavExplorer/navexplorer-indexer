@@ -18,23 +18,14 @@ public class AddressTransaction {
     String id;
 
     Date time;
-
     String address;
-
     AddressTransactionType type;
-
     String transaction;
-
-    @Indexed
     Integer height;
-
     Boolean standard = false;
-
     Double balance = 0.0;
-
     Double sent = 0.0;
     Double received = 0.0;
-
     Boolean coldStaking = false;
     Double coldStakingBalance = 0.0;
     Double coldStakingSent = 0.0;

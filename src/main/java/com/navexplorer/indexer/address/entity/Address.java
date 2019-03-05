@@ -39,8 +39,6 @@ public class Address {
     Double coldStakedReceived = 0.0;
 
     Double coldStakedBalance = 0.0;
-
-    @Indexed
     Double balance = 0.0;
 
     Integer blockIndex = 0;
