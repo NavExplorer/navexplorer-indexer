@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Validated
 @Component
-@ConfigurationProperties(prefix = "communityFund")
+@ConfigurationProperties(prefix = "communityfund")
 @Data
 public class CommunityFundProperties {
     @NotNull

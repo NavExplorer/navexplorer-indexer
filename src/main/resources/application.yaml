@@ -18,7 +18,7 @@ navcoin:
 zeromq:
   address: tcp://138.68.151.166:28332
 
-communityFund:
+communityfund:
   blocksInCycle: 180
   minQuorum: 0.5
   proposalVoting:
