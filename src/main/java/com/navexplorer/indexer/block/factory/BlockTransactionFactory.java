@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class BlockTransactionFactory {
@@ -50,11 +51,15 @@ public class BlockTransactionFactory {
         Double inputAmount = transaction.getInputAmount();
 
         if (outputAmount - inputAmount > 0) {
+            if (transaction.hasOutputOfType(OutputType.PRIVATE_TRANSACTION)) {
+                return BlockTransactionType.PRIVATE_STAKING;
+            }
+
             if (transaction.hasOutputOfType(OutputType.COLD_STAKING)) {
                 return BlockTransactionType.COLD_STAKING;
-            } else {
-                return BlockTransactionType.STAKING;
             }
+
+            return BlockTransactionType.STAKING;
         }
 
         return BlockTransactionType.SPEND;
@@ -69,18 +74,27 @@ public class BlockTransactionFactory {
     }
 
     private Double applyStaking(BlockTransaction transaction) {
+        if (transaction.isPrivateStaking()) {
+            // hard coded to 2 as static rewards arrived before zeroCt
+            return 200000000.0;
+        }
+
         if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
-            String stakingAddress = transaction.getOutputs().stream()
+            Output stakingOutput = transaction.getOutputs().stream()
                     .filter(t -> t.getAddresses().size() != 0)
-                    .findFirst().orElse(new Output()).getAddresses().get(0);
+                    .findFirst().orElse(new Output());
 
-            if (!transaction.hasInputWithAddress(stakingAddress)) {
-                transaction.getInputs().forEach(i -> i.getAddresses().add(stakingAddress));
+            if (stakingOutput.getAddresses().size() != 0) {
+                String stakingAddress = stakingOutput.getAddresses().get(0);
+
+                if (!transaction.hasInputWithAddress(stakingAddress)) {
+                    transaction.getInputs().forEach(i -> i.getAddresses().add(stakingAddress));
+                }
+
+                return transaction.getOutputs().stream()
+                        .filter(t -> t.getAddresses().contains(stakingAddress))
+                        .mapToDouble(Output::getAmount).sum() - transaction.getInputAmount();
             }
-
-            return transaction.getOutputs().stream()
-                    .filter(t -> t.getAddresses().contains(stakingAddress))
-                    .mapToDouble(Output::getAmount).sum() - transaction.getInputAmount();
         }
 
         return 0.0;
