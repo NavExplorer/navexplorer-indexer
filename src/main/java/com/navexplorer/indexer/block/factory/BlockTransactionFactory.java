@@ -47,10 +47,10 @@ public class BlockTransactionFactory {
             return BlockTransactionType.COINBASE;
         }
 
-        Double outputAmount = transaction.getOutputAmount();
         Double inputAmount = transaction.getInputAmount();
+        Double outputAmount = transaction.getOutputAmount();
 
-        if (outputAmount - inputAmount > 0) {
+        if (!inputAmount.equals(outputAmount) && outputAmount - inputAmount > 0) {
             if (transaction.hasOutputOfType(OutputType.PRIVATE_TRANSACTION)) {
                 return BlockTransactionType.PRIVATE_STAKING;
             }
