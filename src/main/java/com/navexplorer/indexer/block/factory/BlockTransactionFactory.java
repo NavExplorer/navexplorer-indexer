@@ -35,9 +35,11 @@ public class BlockTransactionFactory {
 
         if (!transactionIsCoinbase(apiTransaction)) {
             transaction.setFees(applyFees(transaction, apiTransaction));
-            transaction.setStake(applyStaking(transaction));
             transaction.setVersion(apiTransaction.getVersion());
             transaction.setAnonDestination(apiTransaction.getAnonDestination());
+        }
+        if (transaction.getStake().equals(0.0)) {
+            transaction.setStake(applyStaking(transaction));
         }
 
         return transaction;
