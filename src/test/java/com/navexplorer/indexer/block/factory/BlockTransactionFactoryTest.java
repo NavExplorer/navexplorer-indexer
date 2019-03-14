@@ -66,6 +66,7 @@ public class BlockTransactionFactoryTest {
     public void it_can_apply_fees() {
         Transaction apiTransaction = new Transaction();
         apiTransaction.setHeight(10);
+        apiTransaction.setVersion(1);
 
         ArrayList<Vin> vins = new ArrayList<>();
         Vin vin1 = new Vin();
@@ -103,6 +104,7 @@ public class BlockTransactionFactoryTest {
     public void it_can_apply_a_staking_type() {
         Transaction apiTransaction = new Transaction();
         apiTransaction.setHeight(10);
+        apiTransaction.setVersion(1);
 
         ArrayList<Vin> vins = new ArrayList<>();
         Vin vin1 = new Vin();
