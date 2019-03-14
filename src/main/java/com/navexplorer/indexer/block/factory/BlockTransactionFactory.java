@@ -72,7 +72,7 @@ public class BlockTransactionFactory {
         if (transaction.getType().equals(BlockTransactionType.PRIVATE_SPEND)) {
             for (Vout vout : apiTransaction.getVout()) {
                 if (vout.getScriptPubKey() != null && vout.getScriptPubKey().getAsm().equals("OP_FEE")) {
-                    return vout.getValue();
+                    return vout.getValueSat();
                 }
             }
 
