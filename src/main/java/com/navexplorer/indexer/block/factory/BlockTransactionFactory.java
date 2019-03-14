@@ -5,6 +5,7 @@ import com.navexplorer.indexer.block.entity.BlockTransactionType;
 import com.navexplorer.indexer.block.entity.Output;
 import com.navexplorer.indexer.block.entity.OutputType;
 import org.navcoin.response.Transaction;
+import org.navcoin.response.transaction.Vout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class BlockTransactionFactory {
         transaction.setType(applyType(transaction, apiTransaction));
 
         if (!transactionIsCoinbase(apiTransaction)) {
-            transaction.setFees(applyFees(transaction));
+            transaction.setFees(applyFees(transaction, apiTransaction));
             transaction.setStake(applyStaking(transaction));
             transaction.setVersion(apiTransaction.getVersion());
             transaction.setAnonDestination(apiTransaction.getAnonDestination());
@@ -47,14 +48,16 @@ public class BlockTransactionFactory {
             return BlockTransactionType.COINBASE;
         }
 
-        Double inputAmount = transaction.getInputAmount();
-        Double outputAmount = transaction.getOutputAmount();
-
-        if (outputAmount - inputAmount > 0) {
-            if (transaction.hasOutputOfType(OutputType.PRIVATE_TRANSACTION)) {
+        if (apiTransaction.getVersion().equals(131)) {
+            Vout firstOutput = apiTransaction.getVout()[0];
+            if (firstOutput.getScriptPubKey() == null && firstOutput.getValue() == 0) {
                 return BlockTransactionType.PRIVATE_STAKING;
+            } else {
+                return BlockTransactionType.PRIVATE_SPEND;
             }
+        }
 
+        if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
             if (transaction.hasOutputOfType(OutputType.COLD_STAKING)) {
                 return BlockTransactionType.COLD_STAKING;
             }
@@ -65,7 +68,17 @@ public class BlockTransactionFactory {
         return BlockTransactionType.SPEND;
     }
 
-    private Double applyFees(BlockTransaction transaction) {
+    private Double applyFees(BlockTransaction transaction, Transaction apiTransaction) {
+        if (transaction.getType().equals(BlockTransactionType.PRIVATE_SPEND)) {
+            for (Vout vout : apiTransaction.getVout()) {
+                if (vout.getScriptPubKey() != null && vout.getScriptPubKey().getAsm().equals("OP_FEE")) {
+                    return vout.getValue();
+                }
+            }
+
+            return 0.0;
+        }
+
         if (transaction.getInputAmount() - transaction.getOutputAmount() > 0) {
             return transaction.getInputAmount() - transaction.getOutputAmount();
         }
