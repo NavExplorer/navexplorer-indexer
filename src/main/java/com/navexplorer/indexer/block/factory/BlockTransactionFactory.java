@@ -110,6 +110,14 @@ public class BlockTransactionFactory {
             }
         }
 
+        if (transaction.isCoinbase()) {
+            for (Output output : transaction.getOutputs()) {
+                if (output.getType().equals(OutputType.PUBKEY)) {
+                    return output.getAmount();
+                }
+            }
+        }
+
         return 0.0;
     }
 
