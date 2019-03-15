@@ -1,5 +1,6 @@
 package com.navexplorer.indexer.block.indexer;
 
+import com.navexplorer.indexer.block.entity.OutputType;
 import com.navexplorer.indexer.block.event.BlockIndexedEvent;
 import com.navexplorer.indexer.block.event.OrphanedBlockEvent;
 import com.navexplorer.indexer.block.exception.*;
@@ -103,8 +104,12 @@ public class BlockIndexer {
                 block.setSpend(block.getSpend() + transaction.getOutputAmount());
             }
 
-            if (transaction.isCoinbase() && transaction.getOutputAmount() > 0) {
-                block.setCFundPayout(transaction.getOutputAmount());
+            if (transaction.isCoinbase()) {
+                transaction.getOutputs().forEach(o -> {
+                    if (o.getType() == OutputType.PUBKEYHASH) {
+                        block.setCFundPayout(block.getCFundPayout() + o.getAmount());
+                    }
+                });
             }
         });
     }
