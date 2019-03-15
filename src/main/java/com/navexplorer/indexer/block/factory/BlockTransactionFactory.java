@@ -38,9 +38,7 @@ public class BlockTransactionFactory {
             transaction.setVersion(apiTransaction.getVersion());
             transaction.setAnonDestination(apiTransaction.getAnonDestination());
         }
-        if (transaction.getStake().equals(0.0)) {
-            transaction.setStake(applyStaking(transaction));
-        }
+        transaction.setStake(applyStaking(transaction));
 
         return transaction;
     }
@@ -89,6 +87,10 @@ public class BlockTransactionFactory {
     }
 
     private Double applyStaking(BlockTransaction transaction) {
+        if (transaction.isSpend() || transaction.isPrivateSpend()) {
+            return 0.0;
+        }
+
         if (transaction.isPrivateStaking()) {
             // hard coded to 2 as static rewards arrived before zeroCt
             return 200000000.0;

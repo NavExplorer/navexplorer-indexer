@@ -105,6 +105,11 @@ public class BlockTransaction {
     }
 
     @JsonIgnore
+    public boolean isPrivateSpend() {
+        return type == BlockTransactionType.PRIVATE_SPEND;
+    }
+
+    @JsonIgnore
     public boolean isColdStaking() {
         return type == BlockTransactionType.COLD_STAKING;
     }
