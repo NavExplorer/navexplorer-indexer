@@ -50,7 +50,7 @@ public class BlockTransactionFactory {
 
         if (apiTransaction.getVersion().equals(131)) {
             Vout firstOutput = apiTransaction.getVout()[0];
-            if (firstOutput.getScriptPubKey() == null && firstOutput.getValue() == 0) {
+            if ((firstOutput.getScriptPubKey() == null || firstOutput.getScriptPubKey().getAsm().equals("")) && firstOutput.getValue() == 0) {
                 return BlockTransactionType.PRIVATE_STAKING;
             } else {
                 return BlockTransactionType.PRIVATE_SPEND;
