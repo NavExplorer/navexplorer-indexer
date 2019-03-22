@@ -66,6 +66,15 @@ public class AddressTransactionFactory {
 
         if (blockTransaction.isStaking()) {
             transaction.setType(AddressTransactionType.STAKING);
+            if (transaction.getSent().equals(0.0)) {
+                // This was a delegated Stake
+                String delegateStaker = blockTransaction.getInputs().get(0).getAddresses().get(0);
+                List<Input> delegateInputs = blockTransaction.getInputsByAddress(delegateStaker);
+                List<Output> delegateOutputs = blockTransaction.getOutputsByAddress(delegateStaker);
+                transaction.setDelegateStakingSent(delegateInputs.stream().mapToDouble(Input::getAmount).sum());
+                transaction.setDelegateStakingReceived(delegateOutputs.stream().mapToDouble(Output::getAmount).sum());
+            }
+
             return transaction;
         }
 

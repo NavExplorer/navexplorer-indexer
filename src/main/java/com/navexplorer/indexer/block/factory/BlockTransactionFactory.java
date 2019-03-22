@@ -91,8 +91,8 @@ public class BlockTransactionFactory {
             return 0.0;
         }
 
-        if (transaction.isPrivateStaking()) {
-            // hard coded to 2 as static rewards arrived before zeroCt
+        if (transaction.isPrivateStaking() || transaction.getHeight() >= 2761920) {
+            // hard coded to 2 as static rewards arrived after block 2761920 and  before zeroCt
             return 200000000.0;
         }
 
