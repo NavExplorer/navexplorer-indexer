@@ -30,4 +30,5 @@ public class AddressTransaction {
     Double coldStakingBalance = 0.0;
     Double coldStakingSent = 0.0;
     Double coldStakingReceived = 0.0;
+    Double delegateStake = 0.0;
 }

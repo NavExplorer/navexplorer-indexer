@@ -124,6 +124,12 @@ public class BlockIndexer {
 
         transaction.getOutputs().stream().filter(o -> o.getAddresses().size() > 0).findFirst()
                 .ifPresent(output -> block.setStakedBy(output.getAddresses().get(0)));
+
+        if (block.getStakedBy() == null) {
+            // could find an address on the inputs so check the outputs
+            transaction.getInputs().stream().filter(i -> i.getAddresses().size() > 0).findFirst()
+                    .ifPresent(input -> block.setStakedBy(input.getAddresses().get(0)));
+        }
     }
 
     private Boolean blockIsOrphan(Block bestBlock, org.navcoin.response.Block apiBlock) {

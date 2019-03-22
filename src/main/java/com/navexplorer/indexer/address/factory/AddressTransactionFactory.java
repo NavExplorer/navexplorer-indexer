@@ -66,6 +66,15 @@ public class AddressTransactionFactory {
 
         if (blockTransaction.isStaking()) {
             transaction.setType(AddressTransactionType.STAKING);
+            if (transaction.getSent().equals(transaction.getReceived())) {
+                // This was a delegated Stake
+                blockTransaction.getOutputs().forEach(o -> {
+                    if (o.getAddresses().size() == 1 && !o.getAddresses().get(0).equals(transaction.getAddress())) {
+                        transaction.setDelegateStake(o.getAmount());
+                    }
+                });
+            }
+
             return transaction;
         }
 
