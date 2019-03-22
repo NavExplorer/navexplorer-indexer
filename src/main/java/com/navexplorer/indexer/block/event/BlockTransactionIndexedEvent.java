@@ -1,7 +1,7 @@
 package com.navexplorer.indexer.block.event;
 
-import com.navexplorer.library.block.entity.Block;
-import com.navexplorer.library.block.entity.BlockTransaction;
+import com.navexplorer.indexer.block.entity.Block;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

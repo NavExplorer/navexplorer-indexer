@@ -1,15 +1,16 @@
 package com.navexplorer.indexer.block.factory;
 
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.entity.BlockTransactionType;
-import com.navexplorer.library.block.entity.Output;
-import com.navexplorer.library.block.entity.OutputType;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.block.entity.BlockTransactionType;
+import com.navexplorer.indexer.block.entity.Output;
+import com.navexplorer.indexer.block.entity.OutputType;
 import org.navcoin.response.Transaction;
+import org.navcoin.response.transaction.Vout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class BlockTransactionFactory {
@@ -33,11 +34,11 @@ public class BlockTransactionFactory {
         transaction.setType(applyType(transaction, apiTransaction));
 
         if (!transactionIsCoinbase(apiTransaction)) {
-            transaction.setFees(applyFees(transaction));
-            transaction.setStake(applyStaking(transaction));
+            transaction.setFees(applyFees(transaction, apiTransaction));
             transaction.setVersion(apiTransaction.getVersion());
             transaction.setAnonDestination(apiTransaction.getAnonDestination());
         }
+        transaction.setStake(applyStaking(transaction));
 
         return transaction;
     }
@@ -47,21 +48,37 @@ public class BlockTransactionFactory {
             return BlockTransactionType.COINBASE;
         }
 
-        Double outputAmount = transaction.getOutputAmount();
-        Double inputAmount = transaction.getInputAmount();
+        if (apiTransaction.getVersion().equals(131)) {
+            Vout firstOutput = apiTransaction.getVout()[0];
+            if ((firstOutput.getScriptPubKey() == null || firstOutput.getScriptPubKey().getAsm().equals("")) && firstOutput.getValue() == 0) {
+                return BlockTransactionType.PRIVATE_STAKING;
+            } else {
+                return BlockTransactionType.PRIVATE_SPEND;
+            }
+        }
 
-        if (outputAmount - inputAmount > 0) {
+        if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
             if (transaction.hasOutputOfType(OutputType.COLD_STAKING)) {
                 return BlockTransactionType.COLD_STAKING;
-            } else {
-                return BlockTransactionType.STAKING;
             }
+
+            return BlockTransactionType.STAKING;
         }
 
         return BlockTransactionType.SPEND;
     }
 
-    private Double applyFees(BlockTransaction transaction) {
+    private Double applyFees(BlockTransaction transaction, Transaction apiTransaction) {
+        if (transaction.getType().equals(BlockTransactionType.PRIVATE_SPEND)) {
+            for (Vout vout : apiTransaction.getVout()) {
+                if (vout.getScriptPubKey() != null && vout.getScriptPubKey().getAsm().equals("OP_FEE")) {
+                    return vout.getValueSat();
+                }
+            }
+
+            return 0.0;
+        }
+
         if (transaction.getInputAmount() - transaction.getOutputAmount() > 0) {
             return transaction.getInputAmount() - transaction.getOutputAmount();
         }
@@ -70,18 +87,39 @@ public class BlockTransactionFactory {
     }
 
     private Double applyStaking(BlockTransaction transaction) {
+        if (transaction.isSpend() || transaction.isPrivateSpend()) {
+            return 0.0;
+        }
+
+        if (transaction.isPrivateStaking() || transaction.getHeight() >= 2761920) {
+            // hard coded to 2 as static rewards arrived after block 2761920 and  before zeroCt
+            return 200000000.0;
+        }
+
         if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
-            String stakingAddress = transaction.getOutputs().stream()
+            Output stakingOutput = transaction.getOutputs().stream()
                     .filter(t -> t.getAddresses().size() != 0)
-                    .findFirst().orElse(new Output()).getAddresses().get(0);
+                    .findFirst().orElse(new Output());
 
-            if (!transaction.hasInputWithAddress(stakingAddress)) {
-                transaction.getInputs().forEach(i -> i.getAddresses().add(stakingAddress));
+            if (stakingOutput.getAddresses().size() != 0) {
+                String stakingAddress = stakingOutput.getAddresses().get(0);
+
+                if (!transaction.hasInputWithAddress(stakingAddress)) {
+                    transaction.getInputs().forEach(i -> i.getAddresses().add(stakingAddress));
+                }
+
+                return transaction.getOutputs().stream()
+                        .filter(t -> t.getAddresses().contains(stakingAddress))
+                        .mapToDouble(Output::getAmount).sum() - transaction.getInputAmount();
             }
+        }
 
-            return transaction.getOutputs().stream()
-                    .filter(t -> t.getAddresses().contains(stakingAddress))
-                    .mapToDouble(Output::getAmount).sum() - transaction.getInputAmount();
+        if (transaction.isCoinbase()) {
+            for (Output output : transaction.getOutputs()) {
+                if (output.getType().equals(OutputType.PUBKEY)) {
+                    return output.getAmount();
+                }
+            }
         }
 
         return 0.0;

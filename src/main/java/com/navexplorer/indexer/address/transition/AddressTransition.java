@@ -2,11 +2,11 @@ package com.navexplorer.indexer.address.transition;
 
 import com.navexplorer.indexer.address.event.AddressIndexedEvent;
 import com.navexplorer.indexer.address.event.AddressRewindEvent;
-import com.navexplorer.library.address.entity.Address;
-import com.navexplorer.library.address.entity.AddressTransaction;
-import com.navexplorer.library.address.entity.AddressTransactionType;
-import com.navexplorer.library.address.service.AddressService;
-import com.navexplorer.library.address.service.AddressTransactionService;
+import com.navexplorer.indexer.address.entity.Address;
+import com.navexplorer.indexer.address.entity.AddressTransaction;
+import com.navexplorer.indexer.address.entity.AddressTransactionType;
+import com.navexplorer.indexer.address.service.AddressService;
+import com.navexplorer.indexer.address.service.AddressTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

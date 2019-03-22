@@ -1,6 +1,6 @@
 package com.navexplorer.indexer.address.event;
 
-import com.navexplorer.library.address.entity.AddressTransaction;
+import com.navexplorer.indexer.address.entity.AddressTransaction;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

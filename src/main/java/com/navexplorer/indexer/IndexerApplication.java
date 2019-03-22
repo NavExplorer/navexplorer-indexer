@@ -1,13 +1,13 @@
-package com;
+package com.navexplorer.indexer;
 
 import com.navexplorer.indexer.address.indexer.AddressLabelIndexer;
 import com.navexplorer.indexer.block.rewinder.BlockRewinder;
 import com.navexplorer.indexer.communityfund.indexer.PaymentRequestIndexer;
 import com.navexplorer.indexer.communityfund.indexer.ProposalIndexer;
 import com.navexplorer.indexer.softfork.SoftForkImporter;
-import com.navexplorer.library.configuration.entity.Configuration;
-import com.navexplorer.library.configuration.repository.ConfigurationRepository;
-import com.navexplorer.library.navcoin.service.NavcoinService;
+import com.navexplorer.indexer.configuration.entity.Configuration;
+import com.navexplorer.indexer.configuration.repository.ConfigurationRepository;
+import com.navexplorer.indexer.navcoin.service.NavcoinService;
 import com.navexplorer.indexer.block.indexer.BlockIndexer;
 import com.navexplorer.indexer.zeromq.Subscriber;
 import org.springframework.beans.factory.annotation.Autowired;

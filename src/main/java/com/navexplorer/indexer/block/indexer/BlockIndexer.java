@@ -1,18 +1,18 @@
 package com.navexplorer.indexer.block.indexer;
 
+import com.navexplorer.indexer.block.entity.OutputType;
 import com.navexplorer.indexer.block.event.BlockIndexedEvent;
-import com.navexplorer.indexer.block.event.BlockTransactionIndexedEvent;
 import com.navexplorer.indexer.block.event.OrphanedBlockEvent;
 import com.navexplorer.indexer.block.exception.*;
 import com.navexplorer.indexer.block.factory.BlockFactory;
 import com.navexplorer.indexer.block.service.BlockIndexingActiveService;
 import com.navexplorer.indexer.exception.IndexerException;
-import com.navexplorer.library.block.entity.Block;
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.repository.BlockTransactionRepository;
-import com.navexplorer.library.block.service.BlockService;
-import com.navexplorer.library.block.service.BlockTransactionService;
-import com.navexplorer.library.navcoin.service.NavcoinService;
+import com.navexplorer.indexer.block.entity.Block;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.block.repository.BlockTransactionRepository;
+import com.navexplorer.indexer.block.service.BlockService;
+import com.navexplorer.indexer.block.service.BlockTransactionService;
+import com.navexplorer.indexer.navcoin.service.NavcoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -99,11 +99,17 @@ public class BlockIndexer {
     private void updateFeesAndSpendForBlock(Block block) {
         blockTransactionService.getByHeight(block.getHeight()).forEach(transaction -> {
             block.setFees(block.getFees() + transaction.getFees());
+
             if (transaction.isSpend()) {
                 block.setSpend(block.getSpend() + transaction.getOutputAmount());
             }
-            if (transaction.isCoinbase() && transaction.getOutputAmount() > 0) {
-                block.setCFundPayout(transaction.getOutputAmount());
+
+            if (transaction.isCoinbase()) {
+                transaction.getOutputs().forEach(o -> {
+                    if (o.getType() == OutputType.PUBKEYHASH) {
+                        block.setCFundPayout(block.getCFundPayout() + o.getAmount());
+                    }
+                });
             }
         });
     }
@@ -118,6 +124,12 @@ public class BlockIndexer {
 
         transaction.getOutputs().stream().filter(o -> o.getAddresses().size() > 0).findFirst()
                 .ifPresent(output -> block.setStakedBy(output.getAddresses().get(0)));
+
+        if (block.getStakedBy() == null) {
+            // could find an address on the inputs so check the outputs
+            transaction.getInputs().stream().filter(i -> i.getAddresses().size() > 0).findFirst()
+                    .ifPresent(input -> block.setStakedBy(input.getAddresses().get(0)));
+        }
     }
 
     private Boolean blockIsOrphan(Block bestBlock, org.navcoin.response.Block apiBlock) {

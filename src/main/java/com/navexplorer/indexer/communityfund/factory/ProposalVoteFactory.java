@@ -1,9 +1,9 @@
 package com.navexplorer.indexer.communityfund.factory;
 
-import com.navexplorer.library.block.entity.Block;
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.communityfund.entity.ProposalVote;
-import com.navexplorer.library.block.entity.OutputType;
+import com.navexplorer.indexer.block.entity.Block;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.communityfund.entity.ProposalVote;
+import com.navexplorer.indexer.block.entity.OutputType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

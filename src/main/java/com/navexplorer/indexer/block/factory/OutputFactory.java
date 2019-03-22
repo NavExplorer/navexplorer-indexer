@@ -1,7 +1,7 @@
 package com.navexplorer.indexer.block.factory;
 
-import com.navexplorer.library.block.entity.OutputType;
-import com.navexplorer.library.block.entity.Output;
+import com.navexplorer.indexer.block.entity.OutputType;
+import com.navexplorer.indexer.block.entity.Output;
 import org.navcoin.response.Transaction;
 import org.navcoin.response.transaction.Vout;
 import org.springframework.stereotype.Service;

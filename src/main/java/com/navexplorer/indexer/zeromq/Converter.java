@@ -2,16 +2,13 @@ package com.navexplorer.indexer.zeromq;
 
 import java.util.Formatter;
 
-public class Converter {
-    public static String bin2hex(byte[] bytes) {
-        Formatter f = new Formatter();
-        try {
+class Converter {
+    static String bin2hex(byte[] bytes) {
+        try (Formatter f = new Formatter()) {
             for (byte c : bytes) {
                 f.format("%02X", c);
             }
             return f.toString().toLowerCase();
-        } finally {
-            f.close();
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.navexplorer.indexer.block.event;
 
-import com.navexplorer.library.block.entity.Block;
+import com.navexplorer.indexer.block.entity.Block;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -2,9 +2,9 @@ package com.navexplorer.indexer.softfork;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.navexplorer.library.softfork.entity.SoftFork;
-import com.navexplorer.library.softfork.entity.SoftForkState;
-import com.navexplorer.library.softfork.repository.SoftForkRepository;
+import com.navexplorer.indexer.softfork.entity.SoftFork;
+import com.navexplorer.indexer.softfork.entity.SoftForkState;
+import com.navexplorer.indexer.softfork.repository.SoftForkRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

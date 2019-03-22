@@ -2,13 +2,11 @@ package com.navexplorer.indexer.communityfund.indexer;
 
 import com.mongodb.DuplicateKeyException;
 import com.navexplorer.indexer.communityfund.factory.PaymentRequestFactory;
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.entity.BlockTransactionType;
-import com.navexplorer.library.communityfund.entity.PaymentRequest;
-import com.navexplorer.library.communityfund.entity.PaymentRequestState;
-import com.navexplorer.library.communityfund.repository.PaymentRequestRepository;
-import com.navexplorer.library.communityfund.service.CommunityFundService;
-import com.navexplorer.library.navcoin.service.NavcoinService;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.communityfund.entity.PaymentRequest;
+import com.navexplorer.indexer.communityfund.entity.PaymentRequestState;
+import com.navexplorer.indexer.communityfund.repository.PaymentRequestRepository;
+import com.navexplorer.indexer.navcoin.service.NavcoinService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

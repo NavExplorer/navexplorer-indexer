@@ -1,14 +1,13 @@
 package com.navexplorer.indexer.block.rewinder;
 
-import com.navexplorer.indexer.block.event.BlockRewindEvent;
-import com.navexplorer.indexer.block.event.BlockTransactionRewindEvent;
+import com.navexplorer.indexer.block.factory.BlockFactory;
 import com.navexplorer.indexer.block.service.BlockIndexingActiveService;
-import com.navexplorer.library.block.entity.Block;
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.repository.BlockRepository;
-import com.navexplorer.library.block.repository.BlockTransactionRepository;
-import com.navexplorer.library.block.service.BlockTransactionService;
-import com.navexplorer.library.navcoin.service.NavcoinService;
+import com.navexplorer.indexer.block.entity.Block;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.block.repository.BlockRepository;
+import com.navexplorer.indexer.block.repository.BlockTransactionRepository;
+import com.navexplorer.indexer.block.service.BlockTransactionService;
+import com.navexplorer.indexer.navcoin.service.NavcoinService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,7 +15,7 @@ import org.mockito.Mock;
 import org.navcoin.response.Transaction;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +23,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BlockRewinderTest {
     @InjectMocks
     private BlockRewinder blockRewinder;
@@ -76,8 +75,13 @@ public class BlockRewinderTest {
 
     @Test
     public void it_can_rewind_the_top_10_blocks() {
-        Block block = new Block();
-        List<Block> blocks = Arrays.asList(block, block, block, block, block, block, block, block, block, block);
+        List<Block> blocks = new ArrayList<>();
+        for(int i=20;i>10;i--) {
+            Block block = new Block();
+            block.setHeight((long) i);
+            blocks.add(block);
+        }
+
 
         BlockTransaction blockTransaction = new BlockTransaction();
         List<BlockTransaction> blockTransactions = Arrays.asList(blockTransaction, blockTransaction);
@@ -89,7 +93,7 @@ public class BlockRewinderTest {
         blockRewinder.rewindTop10Blocks();
 
         verify(blockTransactionRepository, times(blocks.size() * blockTransactions.size())).delete(blockTransaction);
-        verify(blockRepository, times(blocks.size())).delete(block);
+        verify(blockRepository, times(blocks.size())).delete(any(Block.class));
         verify(applicationEventPublisher, times(blocks.size() + (blocks.size() * blockTransactions.size())))
                 .publishEvent(any(ApplicationEvent.class));
     }

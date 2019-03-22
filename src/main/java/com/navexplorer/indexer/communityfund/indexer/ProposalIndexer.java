@@ -2,11 +2,11 @@ package com.navexplorer.indexer.communityfund.indexer;
 
 import org.springframework.dao.DuplicateKeyException;
 import com.navexplorer.indexer.communityfund.factory.ProposalFactory;
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.communityfund.entity.Proposal;
-import com.navexplorer.library.communityfund.entity.ProposalState;
-import com.navexplorer.library.communityfund.repository.ProposalRepository;
-import com.navexplorer.library.navcoin.service.NavcoinService;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.communityfund.entity.Proposal;
+import com.navexplorer.indexer.communityfund.entity.ProposalState;
+import com.navexplorer.indexer.communityfund.repository.ProposalRepository;
+import com.navexplorer.indexer.navcoin.service.NavcoinService;
 import org.navcoin.exception.NavcoinException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

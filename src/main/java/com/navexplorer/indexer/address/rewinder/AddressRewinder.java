@@ -1,8 +1,8 @@
 package com.navexplorer.indexer.address.rewinder;
 
 import com.navexplorer.indexer.address.transition.AddressTransition;
-import com.navexplorer.library.address.repository.AddressTransactionRepository;
-import com.navexplorer.library.block.entity.Block;
+import com.navexplorer.indexer.address.repository.AddressTransactionRepository;
+import com.navexplorer.indexer.block.entity.Block;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -52,8 +52,6 @@ public class Subscriber {
                         break;
                     case 1:
                         if (messageType.equals("hashblock")) {
-                            String messageContent = Converter.bin2hex(bytes);
-
                             blockIndexer.indexAllBlocks();
                             proposalIndexer.updateAllProposals();
                             paymentRequestIndexer.updateAllPaymentRequests();

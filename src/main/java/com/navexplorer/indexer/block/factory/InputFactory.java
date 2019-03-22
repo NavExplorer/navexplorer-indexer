@@ -1,9 +1,9 @@
 package com.navexplorer.indexer.block.factory;
 
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.entity.Input;
-import com.navexplorer.library.block.entity.Output;
-import com.navexplorer.library.block.service.BlockTransactionService;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.block.entity.Input;
+import com.navexplorer.indexer.block.entity.Output;
+import com.navexplorer.indexer.block.service.BlockTransactionService;
 import org.navcoin.response.Transaction;
 import org.navcoin.response.transaction.Vin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -29,7 +28,10 @@ public class InputFactory {
     private Input createInput(Vin vin) {
         Input input = new Input();
 
-        if (vin.getAddress() != null) {
+        if (vin.getZerocoinspend() != null) {
+            input.setZeroCoinSpend(vin.getZerocoinspend());
+            input.setAmount(vin.getValue() * 100000000);
+        } else if (vin.getAddress() != null) {
             input.getAddresses().add(vin.getAddress());
         }
 

@@ -1,16 +1,16 @@
 package com.navexplorer.indexer.block.factory;
 
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.block.entity.Input;
-import com.navexplorer.library.block.entity.Output;
-import com.navexplorer.library.block.service.BlockTransactionService;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.block.entity.Input;
+import com.navexplorer.indexer.block.entity.Output;
+import com.navexplorer.indexer.block.service.BlockTransactionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.navcoin.response.Transaction;
 import org.navcoin.response.transaction.Vin;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class InputFactoryTest {
     @InjectMocks
     private InputFactory inputFactory;

@@ -1,8 +1,8 @@
 package com.navexplorer.indexer.communityfund.rewinder;
 
-import com.navexplorer.library.block.entity.BlockTransaction;
-import com.navexplorer.library.communityfund.entity.Proposal;
-import com.navexplorer.library.communityfund.repository.ProposalRepository;
+import com.navexplorer.indexer.block.entity.BlockTransaction;
+import com.navexplorer.indexer.communityfund.entity.Proposal;
+import com.navexplorer.indexer.communityfund.repository.ProposalRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,8 +2,8 @@ package com.navexplorer.indexer.address.indexer;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.navexplorer.library.address.entity.Address;
-import com.navexplorer.library.address.repository.AddressRepository;
+import com.navexplorer.indexer.address.entity.Address;
+import com.navexplorer.indexer.address.repository.AddressRepository;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

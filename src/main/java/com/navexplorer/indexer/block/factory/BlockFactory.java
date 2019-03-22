@@ -1,7 +1,7 @@
 package com.navexplorer.indexer.block.factory;
 
 import com.navexplorer.indexer.block.exception.CreateBlockException;
-import com.navexplorer.library.block.entity.Block;
+import com.navexplorer.indexer.block.entity.Block;
 import java.util.Date;
 
 import org.slf4j.Logger;
