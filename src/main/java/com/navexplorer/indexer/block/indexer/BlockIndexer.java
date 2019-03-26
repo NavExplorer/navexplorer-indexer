@@ -90,9 +90,7 @@ public class BlockIndexer {
     }
 
     private Block indexBlock(org.navcoin.response.Block apiBlock, Double previousBalance) {
-        logger.info("Create new block");
         Block block = blockFactory.createBlock(apiBlock);
-        logger.info("Save block");
         blockService.save(block);
 
         apiBlock.getTx().forEach(blockTransactionIndexer::indexTransaction);
@@ -101,7 +99,6 @@ public class BlockIndexer {
         updateStakingInfo(block);
         block.setBalance(previousBalance + (block.getStake() != null ? block.getStake() : 0.0) + block.getCFundPayout());
 
-        logger.info("Save block");
         blockService.save(block);
 
         applicationEventPublisher.publishEvent(new BlockIndexedEvent(this, block));
@@ -110,8 +107,6 @@ public class BlockIndexer {
     }
 
     private void updateFeesAndSpendForBlock(Block block) {
-        logger.info("Update fees and spend");
-
         blockTransactionService.getByHeight(block.getHeight()).forEach(transaction -> {
             block.setFees(block.getFees() + transaction.getFees());
 
@@ -130,8 +125,6 @@ public class BlockIndexer {
     }
 
     private void updateStakingInfo(Block block) {
-        logger.info("Update staking info");
-
         Optional<BlockTransaction> transactionOptional = blockTransactionRepository.findByBlockHash(block.getHash())
                 .stream()
                 .filter(bt -> bt.getStake() > 0.0)
