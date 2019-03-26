@@ -63,10 +63,11 @@ public class BlockIndexer {
     }
 
     public Block indexBlocks(Block bestBlock) throws IndexerException {
-        logger.info("Indexing block at height {}", bestBlock.getHeight()+1);
         try {
             bestBlock = bestBlock != null ? bestBlock : blockService.getBestBlock();
             long bestHeight = bestBlock == null ? 0L : bestBlock.getHeight();
+            logger.info("Indexing block at height {}", bestHeight+1);
+
             Double previousBalance = bestBlock == null ? 0.0 : bestBlock.getBalance();
 
             org.navcoin.response.Block apiBlock = navcoinService.getBlockByHeight(bestHeight + 1);
