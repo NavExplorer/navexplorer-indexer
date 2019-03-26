@@ -43,6 +43,7 @@ public class BlockTransaction {
 
     @NotNull
     @JsonIgnore
+    @Indexed
     String blockHash;
 
     List<Input> inputs = new ArrayList<>();
