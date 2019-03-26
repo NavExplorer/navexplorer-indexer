@@ -44,21 +44,23 @@ public class BlockIndexer {
     private BlockFactory blockFactory;
 
     public void indexAllBlocks() {
-        Boolean indexing = true;
+        mustBeActive();
+
+        boolean indexing = true;
+        Block bestBlock = null;
+
         while (indexing) {
             try {
-                indexBlocks();
+                bestBlock = indexBlocks(bestBlock);
             } catch (IndexerException e) {
                 indexing = false;
             }
         }
     }
 
-    public Block indexBlocks() throws IndexerException {
+    public Block indexBlocks(Block bestBlock) throws IndexerException {
         try {
-            mustBeActive();
-
-            Block bestBlock = blockService.getBestBlock();
+            bestBlock = bestBlock != null ? bestBlock : blockService.getBestBlock();
             long bestHeight = bestBlock == null ? 0L : bestBlock.getHeight();
             Double previousBalance = bestBlock == null ? 0.0 : bestBlock.getBalance();
 
