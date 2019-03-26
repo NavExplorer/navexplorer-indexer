@@ -17,8 +17,6 @@ public class BlockFactory {
     private Integer blocksInCycle;
 
     public Block createBlock(org.navcoin.response.Block apiBlock) {
-        logger.info(String.format("Creating new block at height %s", apiBlock.getHeight()));
-
         try {
             return new Block(
                     apiBlock.getHash(),
