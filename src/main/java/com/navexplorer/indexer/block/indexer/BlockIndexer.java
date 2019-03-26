@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BlockIndexer {
     private static final Logger logger = LoggerFactory.getLogger(BlockIndexer.class);
@@ -130,10 +132,15 @@ public class BlockIndexer {
     private void updateStakingInfo(Block block) {
         logger.info("Update staking info");
 
-        BlockTransaction transaction = blockTransactionRepository.findByBlockHashAndStakeIsGreaterThan(block.getHash(), 0.0);
-        if (transaction == null) {
+        Optional<BlockTransaction> transactionOptional = blockTransactionRepository.findByBlockHash(block.getHash())
+                .stream()
+                .filter(bt -> bt.getStake() > 0.0)
+                .findFirst();
+        if (!transactionOptional.isPresent()) {
             return;
         }
+
+        BlockTransaction transaction = transactionOptional.get();
 
         block.setStake(transaction.getStake());
 

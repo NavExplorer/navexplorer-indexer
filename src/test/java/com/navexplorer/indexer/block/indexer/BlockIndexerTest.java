@@ -29,6 +29,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
 
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BlockIndexerTest {
     @InjectMocks
