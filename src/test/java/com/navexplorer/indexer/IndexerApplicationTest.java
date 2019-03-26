@@ -57,7 +57,7 @@ public class IndexerApplicationTest {
         info.setBlocks(1000L);
 
         when(navcoinService.getInfo()).thenReturn(info);
-        when(blockIndexer.indexBlocks()).thenThrow(new IndexerException());
+        when(blockIndexer.indexBlocks(any())).thenThrow(new IndexerException());
 
         application.run();
 
@@ -70,7 +70,7 @@ public class IndexerApplicationTest {
         info.setBlocks(1000L);
 
         when(navcoinService.getInfo()).thenReturn(info);
-        when(blockIndexer.indexBlocks()).thenThrow(new IndexerException());
+        when(blockIndexer.indexBlocks(any())).thenThrow(new IndexerException());
 
         application.run();
 
