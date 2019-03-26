@@ -30,7 +30,6 @@ public class AddressService {
             if (address == null) {
                 address = createNewAddress(hash);
             }
-            address.setRichListPosition(addressRepository.getRichListPosition(address.getBalance()) + 1);
 
             return address;
         } catch (Exception e) {

@@ -34,20 +34,6 @@ public class AddressServiceTest {
     private NavcoinService navcoinService;
 
     @Test
-    public void get_address_will_set_the_rich_list_position() {
-        String hash = "TEST_ADDRESS";
-        Address expectedAddress = new Address(hash);
-
-        when(addressRepository.findByHash(hash)).thenReturn(expectedAddress);
-        when(addressRepository.getRichListPosition(expectedAddress.getBalance())).thenReturn(10L);
-
-        Address actualAddress = addressService.getAddress(hash);
-
-        assertThat(actualAddress.getHash()).isEqualTo(hash);
-        assertThat(actualAddress.getRichListPosition()).isEqualTo(11L);
-    }
-
-    @Test
     public void get_address_will_create_a_new_address_if_one_doesnt_exist() {
         String hash = "TEST_ADDRESS";
 

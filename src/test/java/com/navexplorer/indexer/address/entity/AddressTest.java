@@ -77,14 +77,4 @@ public class AddressTest {
         assertThat(address.getStakedCount()).isEqualTo(2);
         assertThat(address.getBalance()).isEqualTo(6.0);
     }
-
-    @Test
-    public void it_can_set_and_get_the_rich_list_position() {
-        Long richListPosition = 5L;
-
-        Address address = new Address();
-        address.setRichListPosition(richListPosition);
-
-        assertThat(address.getRichListPosition()).isEqualTo(richListPosition);
-    }
 }

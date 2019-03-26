@@ -10,8 +10,6 @@ import java.util.List;
 @Service
 @EnableMongoRepositories()
 public interface AddressTransactionRepository extends MongoRepository<AddressTransaction, String> {
-    List<AddressTransaction> findByTransaction(String transaction);
-
     List<AddressTransaction> findByHeight(Long height);
 
     AddressTransaction findFirstByAddressOrderByHeightDesc(String address);
