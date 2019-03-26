@@ -12,7 +12,8 @@ public enum OutputType {
     PROPOSAL_YES_VOTE("proposal_yes_vote"),
     PAYMENT_REQUEST_NO_VOTE("payment_request_no_vote"),
     PAYMENT_REQUEST_YES_VOTE("payment_request_yes_vote"),
-    PRIVATE_TRANSACTION("private_transaction");
+    PRIVATE_TRANSACTION("private_transaction"),
+    POOL_STAKING("pool_staking");
 
     String value;
 

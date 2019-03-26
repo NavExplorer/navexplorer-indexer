@@ -27,6 +27,7 @@ public class NavcoinService {
     }
 
     public Block getBlockByHeight(Long height) {
+        logger.info("Navcoind: Get block by height {}", height);
         Block block;
         try {
             return navcoinApi.getBlock(navcoinApi.getBlockHash(height.intValue()));

@@ -13,12 +13,16 @@ import com.navexplorer.indexer.block.repository.BlockTransactionRepository;
 import com.navexplorer.indexer.block.service.BlockService;
 import com.navexplorer.indexer.block.service.BlockTransactionService;
 import com.navexplorer.indexer.navcoin.service.NavcoinService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BlockIndexer {
+    private static final Logger logger = LoggerFactory.getLogger(BlockIndexer.class);
+
     @Autowired
     private BlockIndexingActiveService blockIndexingActiveService;
 
@@ -44,21 +48,24 @@ public class BlockIndexer {
     private BlockFactory blockFactory;
 
     public void indexAllBlocks() {
-        Boolean indexing = true;
+        mustBeActive();
+
+        boolean indexing = true;
+        Block bestBlock = null;
+
         while (indexing) {
             try {
-                indexBlocks();
+                bestBlock = indexBlocks(bestBlock);
             } catch (IndexerException e) {
                 indexing = false;
             }
         }
     }
 
-    public Block indexBlocks() throws IndexerException {
+    public Block indexBlocks(Block bestBlock) throws IndexerException {
+        logger.info("Indexing block at height {}", bestBlock.getHeight()+1);
         try {
-            mustBeActive();
-
-            Block bestBlock = blockService.getBestBlock();
+            bestBlock = bestBlock != null ? bestBlock : blockService.getBestBlock();
             long bestHeight = bestBlock == null ? 0L : bestBlock.getHeight();
             Double previousBalance = bestBlock == null ? 0.0 : bestBlock.getBalance();
 
@@ -80,7 +87,9 @@ public class BlockIndexer {
     }
 
     private Block indexBlock(org.navcoin.response.Block apiBlock, Double previousBalance) {
+        logger.info("Create new block");
         Block block = blockFactory.createBlock(apiBlock);
+        logger.info("Save block");
         blockService.save(block);
 
         apiBlock.getTx().forEach(blockTransactionIndexer::indexTransaction);
@@ -89,6 +98,7 @@ public class BlockIndexer {
         updateStakingInfo(block);
         block.setBalance(previousBalance + (block.getStake() != null ? block.getStake() : 0.0) + block.getCFundPayout());
 
+        logger.info("Save block");
         blockService.save(block);
 
         applicationEventPublisher.publishEvent(new BlockIndexedEvent(this, block));
@@ -97,6 +107,8 @@ public class BlockIndexer {
     }
 
     private void updateFeesAndSpendForBlock(Block block) {
+        logger.info("Update fees and spend");
+
         blockTransactionService.getByHeight(block.getHeight()).forEach(transaction -> {
             block.setFees(block.getFees() + transaction.getFees());
 
@@ -115,6 +127,8 @@ public class BlockIndexer {
     }
 
     private void updateStakingInfo(Block block) {
+        logger.info("Update staking info");
+
         BlockTransaction transaction = blockTransactionRepository.findByBlockHashAndStakeIsGreaterThan(block.getHash(), 0.0);
         if (transaction == null) {
             return;
