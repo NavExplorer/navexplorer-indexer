@@ -31,6 +31,7 @@ public class BlockTransaction {
     String hash;
 
     @NotNull
+    @Indexed
     Integer height;
 
     @NotNull
