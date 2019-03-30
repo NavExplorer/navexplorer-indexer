@@ -91,33 +91,33 @@ public class BlockTransactionFactory {
             return 0.0;
         }
 
-        if (transaction.isPrivateStaking() || transaction.getHeight() >= 2761920) {
-            // hard coded to 2 as static rewards arrived after block 2761920 and  before zeroCt
-            return 200000000.0;
-        }
-
-        if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
-            Output stakingOutput = transaction.getOutputs().stream()
-                    .filter(t -> t.getAddresses().size() != 0)
-                    .findFirst().orElse(new Output());
-
-            if (stakingOutput.getAddresses().size() != 0) {
-                String stakingAddress = stakingOutput.getAddresses().get(0);
-
-                if (!transaction.hasInputWithAddress(stakingAddress)) {
-                    transaction.getInputs().forEach(i -> i.getAddresses().add(stakingAddress));
-                }
-
-                return transaction.getOutputs().stream()
-                        .filter(t -> t.getAddresses().contains(stakingAddress))
-                        .mapToDouble(Output::getAmount).sum() - transaction.getInputAmount();
-            }
-        }
-
         if (transaction.isCoinbase()) {
             for (Output output : transaction.getOutputs()) {
                 if (output.getType().equals(OutputType.PUBKEY)) {
                     return output.getAmount();
+                }
+            }
+        } else {
+            if (transaction.isPrivateStaking() || transaction.getHeight() >= 2761920) {
+                // hard coded to 2 as static rewards arrived after block 2761920 and  before zeroCt
+                return 200000000.0;
+            }
+
+            if (transaction.getOutputAmount() - transaction.getInputAmount() > 0) {
+                Output stakingOutput = transaction.getOutputs().stream()
+                        .filter(t -> t.getAddresses().size() != 0)
+                        .findFirst().orElse(new Output());
+
+                if (stakingOutput.getAddresses().size() != 0) {
+                    String stakingAddress = stakingOutput.getAddresses().get(0);
+
+                    if (!transaction.hasInputWithAddress(stakingAddress)) {
+                        transaction.getInputs().forEach(i -> i.getAddresses().add(stakingAddress));
+                    }
+
+                    return transaction.getOutputs().stream()
+                            .filter(t -> t.getAddresses().contains(stakingAddress))
+                            .mapToDouble(Output::getAmount).sum() - transaction.getInputAmount();
                 }
             }
         }
