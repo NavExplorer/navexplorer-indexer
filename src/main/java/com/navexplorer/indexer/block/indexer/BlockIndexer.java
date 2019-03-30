@@ -130,6 +130,7 @@ public class BlockIndexer {
                 .filter(bt -> bt.getStake() > 0.0)
                 .findFirst();
         if (!transactionOptional.isPresent()) {
+            logger.info("Didnt find staking transaction");
             return;
         }
 
@@ -140,10 +141,15 @@ public class BlockIndexer {
         transaction.getOutputs().stream().filter(o -> o.getAddresses().size() > 0).findFirst()
                 .ifPresent(output -> block.setStakedBy(output.getAddresses().get(0)));
 
+        logger.info("Didnt find staking address on output");
         if (block.getStakedBy() == null) {
             // could find an address on the inputs so check the outputs
             transaction.getInputs().stream().filter(i -> i.getAddresses().size() > 0).findFirst()
                     .ifPresent(input -> block.setStakedBy(input.getAddresses().get(0)));
+        }
+
+        if (block.getStakedBy() == null) {
+            logger.info("Didnt find staking address on input");
         }
     }
 
