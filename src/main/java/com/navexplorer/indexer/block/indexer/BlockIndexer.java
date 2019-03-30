@@ -134,7 +134,9 @@ public class BlockIndexer {
             return;
         }
 
+
         BlockTransaction transaction = transactionOptional.get();
+        logger.info("Found block {}", transaction.getHash());
 
         block.setStake(transaction.getStake());
 
