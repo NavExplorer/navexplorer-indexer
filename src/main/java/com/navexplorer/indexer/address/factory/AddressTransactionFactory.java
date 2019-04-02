@@ -74,6 +74,10 @@ public class AddressTransactionFactory {
                     }
                 });
             }
+            if (transaction.getSent().equals(0.0)) {
+                // This was a delegated recipient
+                transaction.setType(AddressTransactionType.RECEIVE);
+            }
 
             return transaction;
         }
