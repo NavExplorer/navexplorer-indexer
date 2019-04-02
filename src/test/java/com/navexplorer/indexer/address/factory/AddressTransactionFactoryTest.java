@@ -40,11 +40,17 @@ public class AddressTransactionFactoryTest {
         blockTransaction.setType(BlockTransactionType.STAKING);
         String address = "TEST ADDRESS";
 
+        Input input = new Input();
+        input.setAddresses(Arrays.asList(address));
+        input.setAmount(50.0);
+        blockTransaction.setInputs(Arrays.asList(input));
+
         Output output = new Output();
         output.setAddresses(Arrays.asList(address));
         output.setAmount(100.0);
         output.setType(OutputType.PUBKEYHASH);
         blockTransaction.setOutputs(Arrays.asList(output));
+        blockTransaction.setInputs(Arrays.asList(input));
 
         AddressTransaction transaction = addressTransactionFactory.create(address, blockTransaction);
         assertThat(transaction.getType()).isEqualTo(AddressTransactionType.STAKING);
