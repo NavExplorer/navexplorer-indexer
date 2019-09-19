@@ -103,7 +103,7 @@ public class BlockTransactionFactoryTest {
     @Test
     public void it_can_apply_a_staking_type() {
         Transaction apiTransaction = new Transaction();
-        apiTransaction.setHeight(10);
+        apiTransaction.setHeight(3000);
         apiTransaction.setVersion(1);
 
         ArrayList<Vin> vins = new ArrayList<>();

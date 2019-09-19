@@ -38,7 +38,9 @@ public class BlockTransactionFactory {
             transaction.setVersion(apiTransaction.getVersion());
             transaction.setAnonDestination(apiTransaction.getAnonDestination());
         }
-        transaction.setStake(applyStaking(transaction));
+        if (transaction.getHeight() > 1527) {
+            transaction.setStake(applyStaking(transaction));
+        }
 
         return transaction;
     }
