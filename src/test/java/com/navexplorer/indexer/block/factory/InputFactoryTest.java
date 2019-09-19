@@ -44,7 +44,7 @@ public class InputFactoryTest {
         output1.setAddresses(Arrays.asList("ADDRESS 1", "ADDRESS 2"));
         previousTransaction1.setOutputs(Arrays.asList(output1));
 
-        apiTransaction.setVin((Vin[]) Arrays.asList(vin1).toArray());
+        apiTransaction.setVin(new Vin[]{vin1});
 
         when(blockTransactionService.getOneByHash(vin1.getTxid())).thenReturn(previousTransaction1);
 

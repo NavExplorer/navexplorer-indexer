@@ -38,7 +38,7 @@ public class OutputFactoryTest {
         vout3.getScriptPubKey().setType("cfund_contribution");
         vout3.setValueSat(0.25);
 
-        apiTransaction.setVout((Vout[]) Arrays.asList(vout1, vout2, vout3).toArray());
+        apiTransaction.setVout(new Vout[]{vout1, vout2, vout3});
 
         List<Output> outputs = new OutputFactory().createOutputs(apiTransaction);
 

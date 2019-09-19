@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class NavcoinService {
     private static final Logger logger = LoggerFactory.getLogger(NavcoinService.class);
@@ -67,15 +65,7 @@ public class NavcoinService {
         return navcoinApi.getProposal(hash);
     }
 
-    public List<Proposal> listProposals(String status) {
-        return navcoinApi.listProposals(status);
-    }
-
     public PaymentRequest getPaymentRequest(String hash) {
         return navcoinApi.getPaymentRequest(hash);
-    }
-
-    public CFundStats getCFundStats() {
-        return navcoinApi.getCFundStats();
     }
 }

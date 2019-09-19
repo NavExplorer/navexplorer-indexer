@@ -67,6 +67,8 @@ public class Block {
 
     Integer blockCycle;
 
+    List<Signal> signals = new ArrayList<>();
+
     @Transient
     boolean best = false;
 
