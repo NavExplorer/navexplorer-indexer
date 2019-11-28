@@ -41,6 +41,7 @@ public class ProposalIndexer {
 
             logger.info("Community fund proposal saved: " + proposal.getHash());
         } catch (NavcoinException e) {
+            logger.error(e.getMessage());
             logger.error("Community fund proposal not found in tx : " + transaction.getHash());
 
         } catch (DuplicateKeyException e) {
