@@ -6,7 +6,8 @@ public enum PaymentRequestState {
     PENDING(0),
     ACCEPTED(1),
     REJECTED(2),
-    EXPIRED(3);
+    EXPIRED(3),
+    PAID(6);
 
     Integer id;
 
