@@ -86,7 +86,7 @@ public class BlockIndexer {
             applicationEventPublisher.publishEvent(new OrphanedBlockEvent(this));
         } catch (ReachedBestBlockException e) {
             logger.info("Reached the best block");
-            return null;
+            throw e;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
