@@ -53,9 +53,9 @@ public class PaymentRequestIndexer {
     public void updateAllPaymentRequests() {
         updatePaymentRequestsByState(PaymentRequestState.PENDING);
         updatePaymentRequestsByState(PaymentRequestState.ACCEPTED);
-//        updatePaymentRequestsByState(PaymentRequestState.REJECTED);
-//        updatePaymentRequestsByState(PaymentRequestState.EXPIRED);
-//        updatePaymentRequestsByState(PaymentRequestState.PAID);
+        updatePaymentRequestsByState(PaymentRequestState.REJECTED);
+        updatePaymentRequestsByState(PaymentRequestState.EXPIRED);
+        updatePaymentRequestsByState(PaymentRequestState.PAID);
     }
 
     private void updatePaymentRequestsByState(PaymentRequestState state) {

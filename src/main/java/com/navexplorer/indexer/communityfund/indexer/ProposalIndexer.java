@@ -58,8 +58,8 @@ public class ProposalIndexer {
         updateProposalsByState(ProposalState.PENDING_FUNDS);
         updateProposalsByState(ProposalState.PENDING_VOTING_PREQ);
         updateProposalsByState(ProposalState.ACCEPTED);
-//        updateProposalsByState(ProposalState.REJECTED);
-//        updateProposalsByState(ProposalState.EXPIRED);
+        updateProposalsByState(ProposalState.REJECTED);
+        updateProposalsByState(ProposalState.EXPIRED);
     }
 
     private void updateProposalsByState(ProposalState state) {
