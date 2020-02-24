@@ -30,6 +30,7 @@ public class NavcoinService {
         try {
             return navcoinApi.getBlock(navcoinApi.getBlockHash(height.intValue()));
         } catch(NavcoinException e) {
+            logger.error(e.getMessage(), e);
             block = null;
         }
 

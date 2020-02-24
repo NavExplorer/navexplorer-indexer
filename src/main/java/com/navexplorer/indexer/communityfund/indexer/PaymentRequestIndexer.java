@@ -7,6 +7,7 @@ import com.navexplorer.indexer.communityfund.entity.PaymentRequest;
 import com.navexplorer.indexer.communityfund.entity.PaymentRequestState;
 import com.navexplorer.indexer.communityfund.repository.PaymentRequestRepository;
 import com.navexplorer.indexer.navcoin.service.NavcoinService;
+import org.navcoin.exception.NavcoinException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class PaymentRequestIndexer {
             paymentRequestRepository.save(paymentRequest);
 
             logger.info("Community fund payment request saved: " + paymentRequest.getHash());
+        } catch (NavcoinException e) {
+            logger.error("Community fund proposal not found in tx : " + transaction.getHash());
+            throw e;
         } catch (DuplicateKeyException e) {
             //
         } catch (Exception e) {
@@ -49,6 +53,7 @@ public class PaymentRequestIndexer {
         updatePaymentRequestsByState(PaymentRequestState.ACCEPTED);
         updatePaymentRequestsByState(PaymentRequestState.REJECTED);
         updatePaymentRequestsByState(PaymentRequestState.EXPIRED);
+        updatePaymentRequestsByState(PaymentRequestState.PAID);
     }
 
     private void updatePaymentRequestsByState(PaymentRequestState state) {

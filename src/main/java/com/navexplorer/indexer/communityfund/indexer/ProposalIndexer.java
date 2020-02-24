@@ -41,10 +41,8 @@ public class ProposalIndexer {
 
             logger.info("Community fund proposal saved: " + proposal.getHash());
         } catch (NavcoinException e) {
-            logger.error(e.getMessage());
             logger.error("Community fund proposal not found in tx : " + transaction.getHash());
-            System.exit(1);
-
+            throw e;
         } catch (DuplicateKeyException e) {
             if (proposal != null) {
                 updateProposal(proposalRepository.findOneByHash(proposal.getHash()));
