@@ -40,7 +40,7 @@ public class PaymentRequestIndexer {
             logger.info("Community fund payment request saved: " + paymentRequest.getHash());
         } catch (NavcoinException e) {
             logger.error("Community fund proposal not found in tx : " + transaction.getHash());
-            System.exit(1);
+            throw e;
         } catch (DuplicateKeyException e) {
             //
         } catch (Exception e) {
