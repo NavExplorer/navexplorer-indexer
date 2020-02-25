@@ -13,7 +13,8 @@ public enum OutputType {
     PAYMENT_REQUEST_NO_VOTE("payment_request_no_vote"),
     PAYMENT_REQUEST_YES_VOTE("payment_request_yes_vote"),
     PRIVATE_TRANSACTION("private_transaction"),
-    POOL_STAKING("pool_staking");
+    POOL_STAKING("pool_staking"),
+    DAO_SUPPORT("dao_support");
 
     String value;
 
