@@ -33,7 +33,6 @@ public enum OutputType {
         }
 
         System.out.println("Output Type not recognised: " + text);
-        System.exit(1);
 
         return null;
     }
