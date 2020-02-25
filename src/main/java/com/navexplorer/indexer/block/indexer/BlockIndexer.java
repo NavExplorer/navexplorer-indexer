@@ -59,6 +59,7 @@ public class BlockIndexer {
             try {
                 bestBlock = indexBlocks(bestBlock);
             } catch (IndexerException e) {
+                logger.error("Stopped indexing: ({})", e.getMessage());
                 indexing = false;
             }
         }
